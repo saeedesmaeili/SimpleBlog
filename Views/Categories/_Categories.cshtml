@@ -1,0 +1,46 @@
+﻿@using Blog.Models
+@model IEnumerable<Category>
+@{
+    var firstLevel = Model.Where(x => x.ParentId == Guid.Empty).ToList();
+}
+
+<div class="uk-panel uk-panel-box">
+    <ul class="uk-nav uk-nav-parent-icon uk-nav-side" data-uk-nav="{}">
+        <li class="uk-nav-header uk-text-large">شاخه ها</li>
+        <li class="uk-nav-divider"></li>
+        @helper RecurseSomething(Category item)
+        {
+if (Model.Any(x => x.ParentId == item.Id))
+{
+        <li class="uk-parent @(ViewBag.SelectedWikiCategoryParentId == item.Id ? "uk-active" : "") ">
+
+            @if (item.ParentId == Guid.Empty)
+            {
+                <a href="#">@item.Name</a>
+            }
+            else
+            {
+                <a href="@Url.Action("ShowByCategory", "BlogPosts", new { id = item.Id ,name = item.Name.Replace(" ","-")})">@item.Name</a>
+            }
+            <ul class="uk-nav-sub">
+                @foreach (var subData in Model.Where(x => x.ParentId == item.Id).ToList())
+                {
+                    @RecurseSomething(subData);
+                }
+            </ul>
+        </li>
+}
+else
+{
+        <li class="@(ViewBag.SelectedWikiCategory == item.Id ? "uk-active tm-wiki-categoryitem-selected":"")">
+            <a href="@Url.Action("ShowByCategory", "BlogPosts", new { id = item.Id, name = item.Name.Replace(" ", "-") })">@item.Name</a>
+        </li>
+}
+}
+        @foreach (var item in firstLevel)
+        {
+            @RecurseSomething(item)
+        }
+    </ul>
+</div>
+

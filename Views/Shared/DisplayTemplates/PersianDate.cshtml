@@ -1,0 +1,14 @@
+﻿@model DateTime?
+
+@{
+
+    string persianDate = Blog.Helpers.PersianDateExtension.GetPersianDateString(Model);
+    string latinDate = "";
+    if (Model != null)
+    {
+        latinDate = ((DateTime)Model).ToString("d MMM yyyy");
+    }
+}
+
+
+@persianDate

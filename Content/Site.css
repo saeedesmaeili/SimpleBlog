@@ -1,0 +1,10 @@
+﻿.uk-navbar-nav > li > a{
+    border-left:1px solid white;
+}
+.tm-nav-active {
+
+}
+
+.uk-container{
+    padding : 0 15px;
+}

@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title - سعید اسماعیلی</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon.png">
+    
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body >
+
+    <div class=" uk-margin-top uk-margin-large-bottom">
+
+        <nav class="uk-navbar uk-margin-large-bottom" data-uk-sticky="{ clsactive : 'tm-nav-active'}">
+            <ul class="uk-navbar-nav uk-hidden-small">
+                <li class="uk-active">
+                    <a href="@Url.Action("Index","Home")"><i class="uk-icon-home"></i></a>
+                </li>
+                <li>
+                    <a href="@Url.Action("AboutMe","Home")"><i class="uk-icon-user uk-margin-small-right"></i>درباره من</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index","BlogPosts")"><i class="uk-icon-comment uk-margin-small-right"></i>وبلاگ</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index","Works")">نمونه کارها</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("ContactMe","Home")">تماس با من</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Login","Account")">ورود</a>
+                </li>
+            </ul>
+            <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
+            <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Brand</div>
+        </nav>
+
+        @*@Html.Partial("_LoginPartial")*@
+        <div class="uk-container-center uk-container" >
+            @RenderBody()
+        </div>
+        <footer dir="ltr">
+            <hr class="uk-grid-divider">
+            <p>&copy; @DateTime.Now.Year - Saeed Esmaeili</p>
+        </footer>
+    </div>
+
+    <div id="offcanvas" class="uk-offcanvas">
+        <div class="uk-offcanvas-bar">
+            <ul class="uk-nav uk-nav-offcanvas">
+                <li class="uk-active">
+                    <a href="@Url.Action("Index","Home")"><i class="uk-icon-home"></i></a>
+                </li>
+                <li>
+                    <a href="@Url.Action("AboutMe","Home")">درباره من</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index","BlogPosts")">وبلاگ</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index","Works")">نمونه کارها</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("ContactMe","Home")">تماس با من</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Login","Account")">ورود</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/uikit")
+    @RenderSection("scripts", required: false)
+    <script>
+        $.scrollSpeed(100, 800);
+    </script>
+</body>
+</html>
