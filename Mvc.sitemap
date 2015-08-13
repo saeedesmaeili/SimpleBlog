@@ -3,8 +3,13 @@
             xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
             xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
 
-  <mvcSiteMapNode title="Home" controller="Home" action="Index">
-    <mvcSiteMapNode title="About" controller="Home" action="About"/>
+  <mvcSiteMapNode title="خانه" controller="Home" action="Index">
+    <mvcSiteMapNode title="درباره من" controller="Home" action="AboutMe"/>
+    <mvcSiteMapNode title="وبلاگ" controller="BlogPosts" action="ShowByCategory">
+        
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="تماس با من" controller="Home" action="ContactMe"/>
+    <mvcSiteMapNode title="نمونه کارها" controller="Works" action="Index"/>
   </mvcSiteMapNode>
 
 </mvcSiteMap>
