@@ -1,4 +1,4 @@
-/*! UIkit 2.21.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.20.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(UI) {
 
     "use strict";
@@ -77,75 +77,45 @@
         }
     });
 
+    // responsive iframes
+    UI.ready((function(){
 
-    // responsive element e.g. iframes
+        var iframes = [], check = function() {
 
-    (function(){
+            iframes.forEach(function(iframe){
 
-        var elements = [], check = function(ele) {
+                if (!iframe.is(':visible')) return;
 
-            if (!ele.is(':visible')) return;
+                var width  = iframe.parent().width(),
+                    iwidth = iframe.data('width'),
+                    ratio  = (width / iwidth),
+                    height = Math.floor(ratio * iframe.data('height'));
 
-            var width  = ele.parent().width(),
-                iwidth = ele.data('width'),
-                ratio  = (width / iwidth),
-                height = Math.floor(ratio * ele.data('height'));
-
-            ele.css({'height': (width < iwidth) ? height : ele.data('height')});
+                iframe.css({'height': (width < iwidth) ? height : iframe.data('height')});
+            });
         };
 
-        UI.component('responsiveElement', {
+        UI.$win.on('resize', UI.Utils.debounce(check, 15));
 
-            defaults: {},
+        return function(context){
 
-            boot: function() {
+            UI.$('iframe.uk-responsive-width', context).each(function(){
 
-                // init code
-                UI.ready(function(context) {
+                var iframe = UI.$(this);
 
-                    UI.$("iframe.uk-responsive-width, [data-uk-responsive]", context).each(function() {
+                if (!iframe.data('responsive') && iframe.attr('width') && iframe.attr('height')) {
 
-                        var ele = UI.$(this), obj;
-
-                        if (!ele.data("responsiveIframe")) {
-                            obj = UI.responsiveElement(ele, {});
-                        }
-                    });
-                });
-            },
-
-            init: function() {
-
-                var ele = this.element;
-
-                if (ele.attr('width') && ele.attr('height')) {
-
-                    ele.data({
-
-                        'width' : ele.attr('width'),
-                        'height': ele.attr('height')
-
-                    }).on('display.uk.check', function(){
-                        check(ele);
-                    });
-
-                    check(ele);
-
-                    elements.push(ele);
+                    iframe.data('width'     , iframe.attr('width'));
+                    iframe.data('height'    , iframe.attr('height'));
+                    iframe.data('responsive', true);
+                    iframes.push(iframe);
                 }
-            }
-        });
-
-        UI.$win.on('resize load', UI.Utils.debounce(function(){
-
-            elements.forEach(function(ele){
-                check(ele);
             });
 
-        }, 15));
+            check();
+        };
 
-    })();
-
+    })());
 
 
     // helper
@@ -182,62 +152,6 @@
                 }
             }
         });
-    };
-
-    UI.Utils.matchHeights = function(elements, options) {
-
-        elements = UI.$(elements).css('min-height', '');
-        options  = UI.$.extend({ row : true }, options);
-
-        var matchHeights = function(group){
-
-            if (group.length < 2) return;
-
-            var max = 0;
-
-            group.each(function() {
-                max = Math.max(max, UI.$(this).outerHeight());
-            }).each(function() {
-
-                var element = UI.$(this),
-                    height  = max - (element.css('box-sizing') == 'border-box' ? 0 : (element.outerHeight() - element.height()));
-
-                element.css('min-height', height + 'px');
-            });
-        };
-
-        if (options.row) {
-
-            elements.first().width(); // force redraw
-
-            setTimeout(function(){
-
-                var lastoffset = false, group = [];
-
-                elements.each(function() {
-
-                    var ele = UI.$(this), offset = ele.offset().top;
-
-                    if (offset != lastoffset && group.length) {
-
-                        matchHeights(UI.$(group));
-                        group  = [];
-                        offset = ele.offset().top;
-                    }
-
-                    group.push(ele);
-                    lastoffset = offset;
-                });
-
-                if (group.length) {
-                    matchHeights(UI.$(group));
-                }
-
-            }, 0);
-
-        } else {
-            matchHeights(elements);
-        }
     };
 
 })(UIkit);
