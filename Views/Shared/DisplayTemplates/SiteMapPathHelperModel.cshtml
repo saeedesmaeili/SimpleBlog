@@ -1,0 +1,17 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapPathHelperModel
+@using System.Web.Mvc.Html
+@using System.Linq
+@using MvcSiteMapProvider.Web.Html.Models
+<ul class="uk-breadcrumb tm-breadcrumb">
+    @foreach (var node in Model)
+    {
+        if (node == Model.Last())
+        {
+            <li class="uk-active"><span>@node.Title</span></li>
+        }
+        else
+        {
+            <li><a href="@node.Url">@node.Title</a></li>
+        }
+    }
+</ul>
