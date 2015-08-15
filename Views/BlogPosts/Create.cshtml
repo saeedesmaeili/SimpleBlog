@@ -28,7 +28,7 @@
         <div class="uk-form-row">
             @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "uk-width-1-1" } })
                 @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="uk-form-row">
             @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "uk-width-1-1" } })
                 @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="uk-form-row">
             @Html.LabelFor(model => model.Preview, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Preview, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Preview, new { htmlAttributes = new { @class = "uk-width-1-1" } })
                 @Html.ValidationMessageFor(model => model.Preview, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -52,7 +52,7 @@
         <div class="uk-form-row">
             @Html.LabelFor(model => model.Keywords, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Keywords, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Keywords, new { htmlAttributes = new { @class = "uk-width-1-1" } })
                 @Html.ValidationMessageFor(model => model.Keywords, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -71,7 +71,7 @@
         <div class="uk-form-row">
             @Html.LabelFor(model => model.PublishDate, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.PublishDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.PublishDate, new { htmlAttributes = new { @class = "" } })
                 @Html.ValidationMessageFor(model => model.PublishDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="uk-form-row">
             @Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "" } })
                 @Html.ValidationMessageFor(model => model.CreateDate, "", new { @class = "text-danger" })
             </div>
         </div>
