@@ -69,3 +69,8 @@ c:\users\saeed\documents\visual studio 2015\Projects\Blog\Blog\obj\Debug\Blog.pd
 c:\users\saeed\documents\visual studio 2015\Projects\Blog\Blog\obj\Debug\Blog.csprojResolveAssemblyReference.cache
 C:\Users\Saeed\documents\visual studio 2015\Projects\Blog\Blog\bin\ImageResizer.dll
 C:\Users\Saeed\documents\visual studio 2015\Projects\Blog\Blog\bin\ImageResizer.xml
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\MvcSiteMapProvider.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\MvcSiteMapProvider.WebActivator.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\WebActivatorEx.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\MvcSiteMapProvider.xml
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\MvcSiteMapProvider.WebActivator.xml
