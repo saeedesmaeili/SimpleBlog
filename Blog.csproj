@@ -369,7 +369,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
-    <Content Include="Images\saeedEsmaeili.png" />
     <Content Include="Images\logo.png" />
     <Content Include="mstile-144x144.png" />
     <Content Include="mstile-150x150.png" />
