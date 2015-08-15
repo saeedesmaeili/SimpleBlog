@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "پست جدید در";
 }
-
+@Html.MvcSiteMap().SiteMapPath()
 <h2>افزودن پست جدید</h2>
 
 @using (Html.BeginForm("Create","BlogPosts",FormMethod.Post , new { @class= "uk-form uk-form-horizontal" }))

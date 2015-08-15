@@ -3,7 +3,7 @@
     ViewBag.Title = "وبلاگ";
 }
 
-
+@Html.MvcSiteMap().SiteMapPath()
 <div class="uk-grid" data-uk-grid-margin="">
     <div class="tm-sidebar uk-width-medium-1-4 uk-hidden-small">
         @Html.Action("Menu", "Categories")
