@@ -4,8 +4,8 @@
     var firstLevel = Model.Where(x => x.ParentId == Guid.Empty).ToList();
 }
 
-<div class="uk-panel uk-panel-box">
-    <ul class="uk-nav uk-nav-parent-icon uk-nav-side" data-uk-nav="{}">
+
+    <ul class="tm-nav uk-nav uk-nav-parent-icon uk-nav-side" data-uk-nav="{}">
         <li class="uk-nav-header uk-text-large">شاخه ها</li>
         <li class="uk-nav-divider"></li>
         @helper RecurseSomething(Category item)
@@ -42,5 +42,4 @@ else
             @RecurseSomething(item)
         }
     </ul>
-</div>
 
