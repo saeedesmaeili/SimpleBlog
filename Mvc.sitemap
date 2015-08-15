@@ -2,14 +2,14 @@
 <mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
             xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
-
   <mvcSiteMapNode title="خانه" controller="Home" action="Index">
     <mvcSiteMapNode title="درباره من" controller="Home" action="AboutMe"/>
-    <mvcSiteMapNode title="وبلاگ" controller="BlogPosts" action="ShowByCategory">
-        
+    <mvcSiteMapNode title="وبلاگ" key="weblog" controller="BlogPosts" action="ShowByCategory" >
+      <mvcSiteMapNode title="a" controller="BlogPosts" action="ShowByCategory" key="BlogPosts_Category" preservedRouteParameters="id" >
+        <mvcSiteMapNode title="a" controller="BlogPosts" action="Details" key="BlogPosts_Details" preservedRouteParameters="id" />
+      </mvcSiteMapNode>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="تماس با من" controller="Home" action="ContactMe"/>
     <mvcSiteMapNode title="نمونه کارها" controller="Works" action="Index"/>
   </mvcSiteMapNode>
-
 </mvcSiteMap>
