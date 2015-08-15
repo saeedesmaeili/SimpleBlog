@@ -1,4 +1,5 @@
 ﻿using Blog.Models;
+using MvcSiteMapProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Blog.Controllers
 {
     public class HomeController : Controller
     {
+        
         public ActionResult Index()
         {
             return View();
