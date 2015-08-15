@@ -34,30 +34,13 @@
 <body class="tm-background">
 
 
-    <nav class="tm-navbar uk-navbar " data-uk-sticky="{ clsactive : 'tm-nav-active'}">
+    <nav class="tm-navbar uk-navbar " data-uk-sticky="{ media: '(min-width: 640px) '}">
         <div class="uk-container uk-container-center">
             <a class="uk-navbar-brand uk-hidden-small" href="@Url.Action("Index","Home")">
                 <img class="uk-margin uk-margin-remove uk-responsive-height" src="@Url.Content("~/Images/logo.png")" title="سعید اسماعیلی - Saeed Esmaeili" alt="سعید اسماعیلی - Saeed Esmaeili">
             </a>
             <ul class="uk-navbar-nav uk-hidden-small">
-                <li class="uk-active">
-                    <a href="@Url.Action("Index","Home")"><i class="uk-icon-home"></i></a>
-                </li>
-                <li>
-                    <a href="@Url.Action("AboutMe","Home")"><i class="uk-icon-user uk-margin-small-right"></i>درباره من</a>
-                </li>
-                <li>
-                    <a href="@Url.Action("Index","BlogPosts")"><i class="uk-icon-comment uk-margin-small-right"></i>وبلاگ</a>
-                </li>
-                <li>
-                    <a href="@Url.Action("Index","Works")">نمونه کارها</a>
-                </li>
-                <li>
-                    <a href="@Url.Action("ContactMe","Home")">تماس با من</a>
-                </li>
-                <li>
-                    <a href="@Url.Action("Login","Account")">ورود</a>
-                </li>
+                @Html.MvcSiteMap().Menu()
             </ul>
             <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
             <div class="uk-navbar-brand uk-navbar-center uk-visible-small">
@@ -69,6 +52,7 @@
     @*@Html.Partial("_LoginPartial")*@
     <div class="tm-middle">
         <div class="uk-container uk-container-center">
+            @Html.MvcSiteMap().SiteMapPath()
             @RenderBody()
         </div>
     </div>
