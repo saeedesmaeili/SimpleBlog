@@ -1,6 +1,8 @@
 ﻿using Blog.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using MvcSiteMapProvider;
+using MvcSiteMapProvider.Web.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,21 +19,26 @@ namespace Blog.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BlogPosts
-        public ActionResult Index()
-        {
-            var posts = db.BlogPosts.Include("Author").ToList();
-            return View(posts);
-        }
-
-
+       
+       [SiteMapTitle("Title")]
         public ActionResult Details(Guid? id)
         {
+            BlogPost blogPost = db.BlogPosts.Find(id);
+
+            // SiteMap and Breadcrumb
+            var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Details");
+            if (node.ParentNode != null)
+            {
+                node.ParentNode.Title = blogPost.Category.Name;
+                node.ParentNode.RouteValues["id"] = blogPost.CategoryId;
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BlogPost blogPost = db.BlogPosts.Find(id);
+            
             if (blogPost == null)
             {
                 return HttpNotFound();
@@ -39,11 +46,24 @@ namespace Blog.Controllers
             return View(blogPost);
         }
 
-        public ActionResult ShowByCategory(Guid id)
+        public ActionResult ShowByCategory(Guid? id)
         {
-            ViewBag.CategoryId = id;
-            var posts = db.BlogPosts.Include("Author").Where(x=>x.CategoryId == id).ToList();
-            return View("Index",posts);
+
+            var posts = from p in db.BlogPosts select p;
+            if (id != null)
+            {
+                ViewBag.CategoryId = id;
+                posts = posts.Where(x => x.CategoryId == id);
+
+                // SiteMap and Breadcrumb
+                var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Category");
+                if (node != null)
+                {
+                    node.Title = db.Categories.Where(c => c.Id == id).First().Name;
+                }
+
+            }
+            return View("Index", posts.Include("Author").ToList());
         }
 
         public ActionResult List()
