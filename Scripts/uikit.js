@@ -1,8 +1,7 @@
-/*! UIkit 2.21.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.20.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(core) {
 
     if (typeof define == "function" && define.amd) { // AMD
-
         define("uikit", function(){
 
             var uikit = window.UIkit || core(window, window.jQuery, window.document);
@@ -44,7 +43,7 @@
 
     var UI = {}, _UI = global.UIkit ? Object.create(global.UIkit) : undefined;
 
-    UI.version = '2.21.0';
+    UI.version = '2.20.3';
 
     UI.noConflict = function() {
         // restore UIkit version
@@ -143,10 +142,6 @@
     UI.support.mutationobserver = (global.MutationObserver || global.WebKitMutationObserver || null);
 
     UI.Utils = {};
-
-    UI.Utils.isFullscreen = function() {
-        return document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || document.fullscreenElement || false;
-    };
 
     UI.Utils.str2json = function(str, notevil) {
         try {
@@ -375,12 +370,12 @@
         });
     };
 
-    $.UIkit          = UI;
-    $.fn.uk          = UI.fn;
+    $.UIkit      = UI;
+    $.fn.uk      = UI.fn;
 
     UI.langdirection = UI.$html.attr("dir") == "rtl" ? "right" : "left";
 
-    UI.components    = {};
+    UI.components = {};
 
     UI.component = function(name, def) {
 
@@ -972,75 +967,45 @@
         }
     });
 
+    // responsive iframes
+    UI.ready((function(){
 
-    // responsive element e.g. iframes
+        var iframes = [], check = function() {
 
-    (function(){
+            iframes.forEach(function(iframe){
 
-        var elements = [], check = function(ele) {
+                if (!iframe.is(':visible')) return;
 
-            if (!ele.is(':visible')) return;
+                var width  = iframe.parent().width(),
+                    iwidth = iframe.data('width'),
+                    ratio  = (width / iwidth),
+                    height = Math.floor(ratio * iframe.data('height'));
 
-            var width  = ele.parent().width(),
-                iwidth = ele.data('width'),
-                ratio  = (width / iwidth),
-                height = Math.floor(ratio * ele.data('height'));
-
-            ele.css({'height': (width < iwidth) ? height : ele.data('height')});
+                iframe.css({'height': (width < iwidth) ? height : iframe.data('height')});
+            });
         };
 
-        UI.component('responsiveElement', {
+        UI.$win.on('resize', UI.Utils.debounce(check, 15));
 
-            defaults: {},
+        return function(context){
 
-            boot: function() {
+            UI.$('iframe.uk-responsive-width', context).each(function(){
 
-                // init code
-                UI.ready(function(context) {
+                var iframe = UI.$(this);
 
-                    UI.$("iframe.uk-responsive-width, [data-uk-responsive]", context).each(function() {
+                if (!iframe.data('responsive') && iframe.attr('width') && iframe.attr('height')) {
 
-                        var ele = UI.$(this), obj;
-
-                        if (!ele.data("responsiveIframe")) {
-                            obj = UI.responsiveElement(ele, {});
-                        }
-                    });
-                });
-            },
-
-            init: function() {
-
-                var ele = this.element;
-
-                if (ele.attr('width') && ele.attr('height')) {
-
-                    ele.data({
-
-                        'width' : ele.attr('width'),
-                        'height': ele.attr('height')
-
-                    }).on('display.uk.check', function(){
-                        check(ele);
-                    });
-
-                    check(ele);
-
-                    elements.push(ele);
+                    iframe.data('width'     , iframe.attr('width'));
+                    iframe.data('height'    , iframe.attr('height'));
+                    iframe.data('responsive', true);
+                    iframes.push(iframe);
                 }
-            }
-        });
-
-        UI.$win.on('resize load', UI.Utils.debounce(function(){
-
-            elements.forEach(function(ele){
-                check(ele);
             });
 
-        }, 15));
+            check();
+        };
 
-    })();
-
+    })());
 
 
     // helper
@@ -1077,62 +1042,6 @@
                 }
             }
         });
-    };
-
-    UI.Utils.matchHeights = function(elements, options) {
-
-        elements = UI.$(elements).css('min-height', '');
-        options  = UI.$.extend({ row : true }, options);
-
-        var matchHeights = function(group){
-
-            if (group.length < 2) return;
-
-            var max = 0;
-
-            group.each(function() {
-                max = Math.max(max, UI.$(this).outerHeight());
-            }).each(function() {
-
-                var element = UI.$(this),
-                    height  = max - (element.css('box-sizing') == 'border-box' ? 0 : (element.outerHeight() - element.height()));
-
-                element.css('min-height', height + 'px');
-            });
-        };
-
-        if (options.row) {
-
-            elements.first().width(); // force redraw
-
-            setTimeout(function(){
-
-                var lastoffset = false, group = [];
-
-                elements.each(function() {
-
-                    var ele = UI.$(this), offset = ele.offset().top;
-
-                    if (offset != lastoffset && group.length) {
-
-                        matchHeights(UI.$(group));
-                        group  = [];
-                        offset = ele.offset().top;
-                    }
-
-                    group.push(ele);
-                    lastoffset = offset;
-                });
-
-                if (group.length) {
-                    matchHeights(UI.$(group));
-                }
-
-            }, 0);
-
-        } else {
-            matchHeights(elements);
-        }
     };
 
 })(UIkit);
@@ -2049,9 +1958,8 @@
     UI.component('gridMatchHeight', {
 
         defaults: {
-            "target"        : false,
-            "row"           : true,
-            "ignorestacked" : false
+            "target" : false,
+            "row"    : true
         },
 
         boot: function() {
@@ -2110,7 +2018,7 @@
 
             var stacked = Math.ceil(100 * parseFloat(firstvisible.css('width')) / parseFloat(firstvisible.parent().css('width'))) >= 100;
 
-            if (stacked && !this.options.ignorestacked) {
+            if (stacked) {
                 this.revert();
             } else {
                 UI.Utils.matchHeights(this.elements, this.options);
@@ -2152,13 +2060,72 @@
         }
     });
 
+    // helper
+
+    UI.Utils.matchHeights = function(elements, options) {
+
+        elements = UI.$(elements).css('min-height', '');
+        options  = UI.$.extend({ row : true }, options);
+
+        var matchHeights = function(group){
+
+            if(group.length < 2) return;
+
+            var max = 0;
+
+            group.each(function() {
+                max = Math.max(max, UI.$(this).outerHeight());
+            }).each(function() {
+
+                var element = UI.$(this),
+                    height  = max - (element.css('box-sizing') == 'border-box' ? 0 : (element.outerHeight() - element.height()));
+
+
+                element.css('min-height', height + 'px');
+            });
+        };
+
+        if(options.row) {
+
+            elements.first().width(); // force redraw
+
+            setTimeout(function(){
+
+                var lastoffset = false, group = [];
+
+                elements.each(function() {
+
+                    var ele = UI.$(this), offset = ele.offset().top;
+
+                    if(offset != lastoffset && group.length) {
+
+                        matchHeights(UI.$(group));
+                        group  = [];
+                        offset = ele.offset().top;
+                    }
+
+                    group.push(ele);
+                    lastoffset = offset;
+                });
+
+                if(group.length) {
+                    matchHeights(UI.$(group));
+                }
+
+            }, 0);
+
+        } else {
+            matchHeights(elements);
+        }
+    };
+
 })(UIkit);
 
 (function(UI) {
 
     "use strict";
 
-    var active = false, activeCount = 0, $html = UI.$html, body;
+    var active = false, $html = UI.$html, body;
 
     UI.component('modal', {
 
@@ -2166,8 +2133,7 @@
             keyboard: true,
             bgclose: true,
             minScrollHeight: 150,
-            center: false,
-            modal: true
+            center: false
         },
 
         scrollable: false,
@@ -2183,8 +2149,6 @@
 
             this.paddingdir = "padding-" + (UI.langdirection == 'left' ? "right":"left");
             this.dialog     = this.find(".uk-modal-dialog");
-
-            this.active     = false;
 
             // Update ARIA
             this.element.attr('aria-hidden', this.element.hasClass("uk-open"));
@@ -2213,21 +2177,11 @@
             var $this = this;
 
             if (this.isActive()) return;
-
-            if (this.options.modal && active) {
-                active.hide(true);
-            }
+            if (active) active.hide(true);
 
             this.element.removeClass("uk-open").show();
             this.resize();
-
-            if (this.options.modal) {
-                active = this;
-            }
-
-            this.active = true;
-
-            activeCount++;
+            active = this;
 
             this.element.addClass("uk-open");
 
@@ -2244,6 +2198,8 @@
         },
 
         hide: function(force) {
+
+            if (!this.isActive()) return;
 
             if (!force && UI.support.transition) {
 
@@ -2308,18 +2264,14 @@
 
         _hide: function() {
 
-            this.active = false;
-            activeCount--;
-
             this.element.hide().removeClass("uk-open");
 
             // Update ARIA
             this.element.attr('aria-hidden', 'true');
 
-            if (!activeCount) {
-                $html.removeClass("uk-modal-page");
-                body.css(this.paddingdir, "");
-            }
+            $html.removeClass("uk-modal-page");
+
+            body.css(this.paddingdir, "");
 
             if(active===this) active = false;
 
@@ -2327,7 +2279,7 @@
         },
 
         isActive: function() {
-            return this.active;
+            return (active == this);
         }
 
     });
@@ -2407,41 +2359,24 @@
 
     UI.modal.alert = function(content, options) {
 
-        options = UI.$.extend(true, {bgclose:false, keyboard:false, modal:false, labels:UI.modal.labels}, options);
-
-        var modal = UI.modal.dialog(([
+        UI.modal.dialog(([
             '<div class="uk-margin uk-modal-content">'+String(content)+'</div>',
-            '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary uk-modal-close">'+options.labels.Ok+'</button></div>'
-        ]).join(""), options);
-
-        modal.on('show.uk.modal', function(){
-            setTimeout(function(){
-                modal.element.find('button:first').focus();
-            }, 50);
-        });
-
-        modal.show();
+            '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary uk-modal-close">Ok</button></div>'
+        ]).join(""), UI.$.extend({bgclose:false, keyboard:false}, options)).show();
     };
 
     UI.modal.confirm = function(content, onconfirm, options) {
 
         onconfirm = UI.$.isFunction(onconfirm) ? onconfirm : function(){};
-        options   = UI.$.extend(true, {bgclose:false, keyboard:false, modal:false, labels:UI.modal.labels}, options);
 
         var modal = UI.modal.dialog(([
             '<div class="uk-margin uk-modal-content">'+String(content)+'</div>',
-            '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary js-modal-confirm">'+options.labels.Ok+'</button> <button class="uk-button uk-modal-close">'+options.labels.Cancel+'</button></div>'
-        ]).join(""), options);
+            '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary js-modal-confirm">Ok</button> <button class="uk-button uk-modal-close">Cancel</button></div>'
+        ]).join(""), UI.$.extend({bgclose:false, keyboard:false}, options));
 
         modal.element.find(".js-modal-confirm").on("click", function(){
             onconfirm();
             modal.hide();
-        });
-
-        modal.on('show.uk.modal', function(){
-            setTimeout(function(){
-                modal.element.find('button:first').focus();
-            }, 50);
         });
 
         modal.show();
@@ -2450,51 +2385,33 @@
     UI.modal.prompt = function(text, value, onsubmit, options) {
 
         onsubmit = UI.$.isFunction(onsubmit) ? onsubmit : function(value){};
-        options  = UI.$.extend(true, {bgclose:false, keyboard:false, modal:false, labels:UI.modal.labels}, options);
 
         var modal = UI.modal.dialog(([
             text ? '<div class="uk-modal-content uk-form">'+String(text)+'</div>':'',
             '<div class="uk-margin-small-top uk-modal-content uk-form"><p><input type="text" class="uk-width-1-1"></p></div>',
-            '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary js-modal-ok">'+options.labels.Ok+'</button> <button class="uk-button uk-modal-close">'+options.labels.Cancel+'</button></div>'
-        ]).join(""), options),
-
-        input = modal.element.find("input[type='text']").val(value || '').on('keyup', function(e){
-            if (e.keyCode == 13) {
-                modal.element.find(".js-modal-ok").trigger('click');
-            }
-        });
+            '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary js-modal-ok">Ok</button> <button class="uk-button uk-modal-close">Cancel</button></div>'
+        ]).join(""), UI.$.extend({bgclose:false, keyboard:false}, options)),
+        input = modal.element.find("input[type='text']").val(value || '');
 
         modal.element.find(".js-modal-ok").on("click", function(){
             if (onsubmit(input.val())!==false){
                 modal.hide();
             }
         });
-
-        modal.on('show.uk.modal', function(){
-            setTimeout(function(){
-                input.focus();
-            }, 50);
-        });
-
         modal.show();
+        setTimeout(function(){ input.focus(); }, 100);
     };
 
     UI.modal.blockUI = function(content, options) {
 
         var modal = UI.modal.dialog(([
             '<div class="uk-margin uk-modal-content">'+String(content || '<div class="uk-text-center">...</div>')+'</div>'
-        ]).join(""), UI.$.extend({bgclose:false, keyboard:false, modal:false}, options));
+        ]).join(""), UI.$.extend({bgclose:false, keyboard:false}, options));
 
         modal.content = modal.element.find('.uk-modal-content:first');
         modal.show();
 
         return modal;
-    };
-
-
-    UI.modal.labels = {
-        'Ok': 'Ok',
-        'Cancel': 'Cancel'
     };
 
 
@@ -2570,7 +2487,7 @@
                     active = parent.hasClass("uk-active");
 
                 $ele.wrap('<div style="overflow:hidden;height:0;position:relative;"></div>');
-                parent.data("list-container", $ele.parent()[active ? 'removeClass':'addClass']('uk-hidden'));
+                parent.data("list-container", $ele.parent());
 
                 // Init ARIA
                 parent.attr('aria-expanded', parent.hasClass("uk-open"));
@@ -2582,56 +2499,37 @@
 
         open: function(li, noanimation) {
 
-            var $this = this, element = this.element, $li = UI.$(li), $container = $li.data('list-container');
+            var $this = this, element = this.element, $li = UI.$(li);
 
             if (!this.options.multiple) {
 
-                element.children('.uk-open').not(li).each(function() {
+                element.children(".uk-open").not(li).each(function() {
 
                     var ele = UI.$(this);
 
-                    if (ele.data('list-container')) {
-                        ele.data('list-container').stop().animate({height: 0}, function() {
-                            UI.$(this).parent().removeClass('uk-open').end().addClass('uk-hidden');
+                    if (ele.data("list-container")) {
+                        ele.data("list-container").stop().animate({height: 0}, function() {
+                            UI.$(this).parent().removeClass("uk-open");
                         });
                     }
                 });
             }
 
-            $li.toggleClass('uk-open');
+            $li.toggleClass("uk-open");
 
             // Update ARIA
-            $li.attr('aria-expanded', $li.hasClass('uk-open'));
+            $li.attr('aria-expanded', $li.hasClass("uk-open"));
 
-            if ($container) {
-
-                if ($li.hasClass('uk-open')) {
-                    $container.removeClass('uk-hidden');
-                }
+            if ($li.data("list-container")) {
 
                 if (noanimation) {
-
-                    $container.stop().height($li.hasClass('uk-open') ? 'auto' : 0);
-
-                    if (!$li.hasClass('uk-open')) {
-                        $container.addClass('uk-hidden');
-                    }
-
-                    this.trigger('display.uk.check');
-
+                    $li.data('list-container').stop().height($li.hasClass("uk-open") ? "auto" : 0);
+                    this.trigger("display.uk.check");
                 } else {
-
-                    $container.stop().animate({
-                        height: ($li.hasClass('uk-open') ? getHeight($container.find('ul:first')) : 0)
+                    $li.data('list-container').stop().animate({
+                        height: ($li.hasClass("uk-open") ? getHeight($li.data('list-container').find('ul:first')) : 0)
                     }, function() {
-
-                        if (!$li.hasClass('uk-open')) {
-                            $container.addClass('uk-hidden');
-                        } else {
-                            $container.css('height', '');
-                        }
-
-                        $this.trigger('display.uk.check');
+                        $this.trigger("display.uk.check");
                     });
                 }
             }
@@ -3242,7 +3140,7 @@
             UI.dropdown(this.responsivetab, {"mode": "click"});
 
             // init
-            $this.trigger("change.uk.tab", [this.element.find(this.options.target).not('.uk-tab-responsive').filter('.uk-active')]);
+            $this.trigger("change.uk.tab", [this.element.find(this.options.target).filter('.uk-active')]);
 
             this.check();
 
@@ -3259,14 +3157,11 @@
 
             var children = this.element.children('li:not(.uk-tab-responsive)').removeClass('uk-hidden');
 
-            if (!children.length) {
-                this.responsivetab.addClass('uk-hidden');
-                return;
-            }
+            if (!children.length) return;
 
             var top          = (children.eq(0).offset().top + Math.ceil(children.eq(0).height()/2)),
                 doresponsive = false,
-                item, link, clone;
+                item, link;
 
             this.responsivetab.lst.empty();
 
@@ -3281,19 +3176,16 @@
 
                 for (var i = 0; i < children.length; i++) {
 
-                    item  = UI.$(children.eq(i));
-                    link  = item.find('a');
+                    item = UI.$(children.eq(i));
+                    link = item.find('a');
 
                     if (item.css('float') != 'none' && !item.attr('uk-dropdown')) {
 
-                        if (!item.hasClass('uk-disabled')) {
-
-                            clone = item[0].outerHTML.replace('<a ', '<a data-index="'+i+'" ');
-
-                            this.responsivetab.lst.append(clone);
-                        }
-
                         item.addClass('uk-hidden');
+
+                        if (!item.hasClass('uk-disabled')) {
+                            this.responsivetab.lst.append('<li><a href="'+link.attr('href')+'" data-index="'+i+'">'+link.html()+'</a></li>');
+                        }
                     }
                 }
             }
