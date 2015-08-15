@@ -1,10 +1,14 @@
 ﻿@model MvcSiteMapProvider.Web.Html.Models.MenuHelperModel
 @using System.Web.Mvc.Html
 @using MvcSiteMapProvider.Web.Html.Models
-    @foreach (var node in Model.Nodes) { 
-        <li class="@(node.IsCurrentNode ? "uk-active":"")">@Html.DisplayFor(m => node) 
-            @if (node.Children.Any()) {
-                @Html.DisplayFor(m => node.Children)
-            }
-        </li>
+
+@foreach (var node in Model.Nodes)
+{
+    <li class="@(node.IsCurrentNode ? "uk-active":"")">
+        @Html.DisplayFor(m => node)
+    @if (node.Children.Any())
+    {
+        @Html.DisplayFor(m => node.Children)
     }
+</li>
+}
