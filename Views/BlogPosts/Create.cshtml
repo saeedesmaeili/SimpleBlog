@@ -6,7 +6,7 @@
 @Html.MvcSiteMap().SiteMapPath()
 <h2>افزودن پست جدید</h2>
 
-@using (Html.BeginForm("Create","BlogPosts",FormMethod.Post , new { @class= "uk-form uk-form-horizontal" }))
+@using (Html.BeginForm("Create","BlogPosts",FormMethod.Post , new { enctype = "multipart/form-data" ,  @class = "uk-form uk-form-horizontal" }))
 {
     @Html.AntiForgeryToken()
     
@@ -34,9 +34,17 @@
         </div>
 
         <div class="uk-form-row">
+            @Html.LabelFor(model => model.Picture, htmlAttributes: new { @class = "uk-form-label" })
+            <div class="uk-form-controls">
+                <input type="file" name="Picture" id="Picture" />
+                @Html.ValidationMessageFor(model => model.Picture, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="uk-form-row">
             @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "uk-width-1-1" } })
+                @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "uk-width-1-1 ckeditor" } })
                 @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
             </div>
         </div>
