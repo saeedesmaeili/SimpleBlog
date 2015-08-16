@@ -74,3 +74,9 @@ C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\MvcSiteMapPro
 C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\WebActivatorEx.dll
 C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\MvcSiteMapProvider.xml
 C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\MvcSiteMapProvider.WebActivator.xml
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Mvc.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Plugins.DiskCache.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Plugins.PrettyGifs.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Mvc.xml
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Plugins.DiskCache.xml
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Plugins.PrettyGifs.xml
