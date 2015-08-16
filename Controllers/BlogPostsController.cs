@@ -1,4 +1,5 @@
-﻿using Blog.Models;
+﻿using Blog.Helpers;
+using Blog.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MvcSiteMapProvider;
@@ -6,9 +7,11 @@ using MvcSiteMapProvider.Web.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace Blog.Controllers
@@ -19,8 +22,8 @@ namespace Blog.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BlogPosts
-       
-       [SiteMapTitle("Title")]
+
+        [SiteMapTitle("Title")]
         public ActionResult Details(Guid? id)
         {
             BlogPost blogPost = db.BlogPosts.Find(id);
@@ -38,7 +41,7 @@ namespace Blog.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            
+
             if (blogPost == null)
             {
                 return HttpNotFound();
@@ -77,11 +80,27 @@ namespace Blog.Controllers
         {
             if (id != null)
             {
-                ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", id);
+                //ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", id);
+                ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", id);
+                // SiteMap and Breadcrumb
+                Category category = db.Categories.Find(id);
+                var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Details");
+                if (node.ParentNode != null)
+                {
+                    node.ParentNode.Title = category.Name;
+                    node.ParentNode.RouteValues["id"] = category.Id;
+                }
             }
             else
             {
-                ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name");
+                //ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name");
+                ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+                var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Details");
+                if (node.ParentNode != null)
+                {
+                    node.ParentNode.Title = "شاخه نامشخص";
+                    node.ParentNode.RouteValues["id"] = "";
+                }
             }
             return View();
         }
@@ -96,18 +115,31 @@ namespace Blog.Controllers
         {
 
 
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            if (Request.Files[0].ContentLength != 0)
+            {
+                string pathToSave = Server.MapPath(WebConfigurationManager.AppSettings["ImagePostPath"]);
+                string filename = Path.GetFileName(Request.Files[0].FileName);
+                Request.Files[0].SaveAs(Path.Combine(pathToSave, filename));
+                blogPost.Picture = filename;
+            }
+            else
+            {
+                blogPost.Picture = "empty.svg";
+            }
 
+            
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(User.Identity.GetUserId());
             blogPost.AuthorId = currentUser.Id.ToString();
             blogPost.CreateDate = DateTime.Now;
-
+            blogPost.LastModifiedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 blogPost.Id = Guid.NewGuid();
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ShowByCategory", new { id = blogPost.CategoryId });
             }
 
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", blogPost.CategoryId);
@@ -138,13 +170,32 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Content,Preview,Keywords,Author,IsPublished,PublishDate,CreateDate,CategoryId")] BlogPost blogPost)
+        public ActionResult Edit([Bind(Include = "Id,Title,Content,Picture,Preview,Keywords,Author,IsPublished,PublishDate,CreateDate,CategoryId")] BlogPost blogPost)
         {
+
+            if (Request.Files[0].ContentLength != 0)
+            {
+                string pathToSave = Server.MapPath(WebConfigurationManager.AppSettings["ImagePostPath"]);
+                if (blogPost.Picture != "empty.svg")
+                {
+                    System.IO.File.Delete(pathToSave + blogPost.Picture);
+                }
+                string filename = Path.GetFileName(Request.Files[0].FileName);
+                Request.Files[0].SaveAs(Path.Combine(pathToSave, filename));
+                blogPost.Picture = filename;
+            }
+
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            
+            blogPost.AuthorId = currentUser.Id.ToString();
+            blogPost.LastModifiedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Entry(blogPost).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ShowByCategory", new { id = blogPost.CategoryId });
             }
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
