@@ -22,11 +22,26 @@ namespace Blog
             bundles.Add(new ScriptBundle("~/bundles/uikit").Include(
                       "~/Scripts/uikit.js",
                       "~/Scripts/components/sticky.js",
-                      "~/Scripts/jquery-scrollspeed.js"));
+                      "~/Scripts/jquery-scrollspeed.js",
+                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shCore.js",
+                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushCSharp.js",
+                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js",
+                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushSql.js",
+                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushXml.js",
+                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushPowerShell.js",
+                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushCss.js",
+                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushCss.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/admin").Include(
+                      "~/ckeditor/ckeditor.js"));
+            
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/uikit.rtl.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                       "~/Scripts/syntaxhighlighter_3.0.83/styles/shCore.css",
+                       "~/Scripts/syntaxhighlighter_3.0.83/styles/shCoreDefault.css"));
         }
     }
 }
