@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="fa-IR" dir="rtl">
 
 <head>
@@ -19,7 +20,7 @@
     <link rel="icon" type="image/png" href="@Url.Content("~/favicon-194x194.png")" sizes="194x194">
     <link rel="icon" type="image/png" href="@Url.Content("~/favicon-96x96.png")" sizes="96x96">
     <link rel="icon" type="image/png" href="@Url.Content("~/android-chrome-192x192.png")" sizes="192x192">
-    <link rel="icon" type="image/png" href="@Url.Content("~/favicon-16x16.png")")" sizes="16x16">
+    <link rel="icon" type="image/png" href="@Url.Content("~/favicon-16x16.png")" )" sizes="16x16">
     <link rel="manifest" href="@Url.Content("~/manifest.json")">
     <meta name="apple-mobile-web-app-title" content="Saeed Esmaeili Weblog">
     <meta name="application-name" content="Saeed Esmaeili Weblog">
@@ -40,7 +41,7 @@
                 <img class="uk-margin uk-margin-remove uk-responsive-height" src="@Url.Content("~/Images/logo.png")" title="سعید اسماعیلی - Saeed Esmaeili" alt="سعید اسماعیلی - Saeed Esmaeili">
             </a>
             <ul class="uk-navbar-nav uk-hidden-small">
-                @Html.MvcSiteMap().Menu()
+                @Html.MvcSiteMap().Menu(new { name = "MainMenu" })
             </ul>
             <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
             <div class="uk-navbar-brand uk-navbar-center uk-visible-small">
@@ -52,7 +53,6 @@
     @*@Html.Partial("_LoginPartial")*@
     <div class="tm-middle">
         <div class="uk-container uk-container-center">
-            @Html.MvcSiteMap().SiteMapPath()
             @RenderBody()
         </div>
     </div>
@@ -102,8 +102,18 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/uikit")
+    @if (User.IsInRole("Admin"))
+    {
+        @Scripts.Render("~/bundles/admin")
+        <script >
+            $(function () {
+                $(".ckeditor").ckeditor();
+            });
+        </script>
+    }
     @RenderSection("scripts", required: false)
     <script>
+        SyntaxHighlighter.all();
         $.scrollSpeed(100, 800);
     </script>
 </body>
