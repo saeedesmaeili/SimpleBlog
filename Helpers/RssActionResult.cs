@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Blog.Helpers
 {
-    public class RssResult : FileResult
+    public class RssActionResult : FileResult
     {
         private readonly SyndicationFeed _feed;
 
@@ -18,7 +18,7 @@ namespace Blog.Helpers
         /// http://www.developerzen.com/2009/01/11/aspnet-mvc-rss-feed-action-result/
         /// </summary>
         /// <param name="feed">The feed to return the user.</param>
-        public RssResult(SyndicationFeed feed)
+        public RssActionResult(SyndicationFeed feed)
             : base("application/rss+xml")
         {
             _feed = feed;
@@ -29,7 +29,7 @@ namespace Blog.Helpers
         /// </summary>
         /// <param name="title">The title for the feed.</param>
         /// <param name="feedItems">The items of the feed.</param>
-        public RssResult(string title, List<SyndicationItem> feedItems)
+        public RssActionResult(string title, List<SyndicationItem> feedItems)
             : base("application/rss+xml")
         {
             _feed = new SyndicationFeed(title, title, HttpContext.Current.Request.Url) { Items = feedItems };
