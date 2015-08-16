@@ -19,6 +19,10 @@ namespace Blog.Models
         [Display(Name ="عنوان مطلب")]
         public string Title { get; set; }
 
+        [Display(Name ="تصویر")]
+        public string Picture { get; set; }
+
+
         [Display(Name = "متن کامل")]
         [AllowHtml]
         [DataType(DataType.MultilineText)]
@@ -48,6 +52,10 @@ namespace Blog.Models
         [Display(Name = "تاریخ تولید")]
         [UIHint("PersianDate")]
         public DateTime CreateDate { get; set; }
+
+        [Display(Name = "تاریخ آخرین ویرایش")]
+        [UIHint("PersianDate")]
+        public DateTime LastModifiedDate { get; set; }
 
         [Display(Name = "شاخه")]
         public Guid CategoryId { get; set; }
