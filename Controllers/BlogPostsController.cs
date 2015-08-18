@@ -66,12 +66,40 @@ namespace Blog.Controllers
                 }
 
             }
-            return View("Index", posts.Include("Author").ToList());
+            return View("Index", posts
+                                    .Include("Author")
+                                    .OrderByDescending(x=>x.PublishDate)
+                                    .ToList()
+                        );
         }
 
-        public ActionResult List()
+        public ActionResult ShowArchive(int year, int mounth) {
+
+            var posts = from p in db.BlogPosts select p;
+
+            var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_ShowArchive");
+            if (node != null)
+            {
+                node.Title = "آرشیو "  + mounth.GetPersianMounthName() + " ماه "+year;
+            }
+            
+            return View("Index", posts
+                                .Where(x=>x.PublishShamsiYear == year && x.PublishShamsiMounth == mounth)
+                                .OrderByDescending(x => x.PublishDate)
+                                .Include("Author")
+                                .ToList()
+                        );
+        }
+        public ActionResult Archive()
         {
-            return PartialView(db.BlogPosts.Include("Author").ToList());
+            return PartialView("_Archive", db.BlogPosts
+                                            .GroupBy(x => new
+                                            {
+                                                Year = x.PublishShamsiYear,
+                                                Mounth = x.PublishShamsiMounth
+                                            })
+                                            .OrderByDescending(o => o.Key.Year)
+                                            .ThenBy(n => n.Key.Mounth).Select(x => new ArchiveItemViewModel() { Year = x.Key.Year, Mounth = x.Key.Mounth }));
         }
 
 
@@ -127,7 +155,7 @@ namespace Blog.Controllers
                 blogPost.Picture = "empty.svg";
             }
 
-            
+
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(User.Identity.GetUserId());
@@ -188,7 +216,7 @@ namespace Blog.Controllers
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(User.Identity.GetUserId());
-            
+
             blogPost.AuthorId = currentUser.Id.ToString();
             blogPost.LastModifiedDate = DateTime.Now;
             if (ModelState.IsValid)
