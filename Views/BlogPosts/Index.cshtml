@@ -4,16 +4,17 @@
     ViewBag.Title = "وبلاگ";
 }
 
-@Html.MvcSiteMap().SiteMapPath()
+
 <div class="uk-grid" data-uk-grid-margin="">
     <div class="tm-sidebar uk-width-medium-1-4 uk-hidden-small">
         @Html.Action("Menu", "Categories")
     </div>
     <div class="tm-main uk-width-medium-3-4">
-        @if (User.IsInRole("Admin"))
-            {
+        @Html.MvcSiteMap().SiteMapPath()
+        @if (User.IsInRole("Author") || User.IsInRole("Admin"))
+        {
             <a class="uk-button" href="@Url.Action("Create","BlogPosts",new { id = ViewBag.CategoryId })">پست جدید</a>
-                <hr />
+            <hr />
         }
         @foreach (var post in Model)
             {
@@ -22,26 +23,30 @@
                 <h3 class="uk-article-title" style="font-size:26px">
                     <a href=" @Url.Action("Details","BlogPosts",new { Id = post.Id })">@post.Title</a>
                 </h3>
+                @if (User.IsInRole("Author") || User.IsInRole("Admin"))
+                {
+                    <a href="@Url.Action("Edit", "BlogPosts", new { id = post.Id })"> ویرایش </a>
+                }
 
 
                 <p class="uk-article-meta ">
                     <i class="uk-icon-user  uk-margin-small-right uk-icon-small"></i>@post.Author.FirstName @post.Author.LastName
-                    <i class="uk-icon-calendar uk-margin-small-right uk-margin-left uk-icon-small"></i>@Html.DisplayFor(modelItem => post.CreateDate)
+                    <i class="uk-icon-calendar uk-margin-small-right uk-margin-left uk-icon-small"></i>@Html.DisplayFor(modelItem => post.PublishDate)
                     <i class="uk-icon-cube  uk-margin-small-right uk-margin-left uk-icon-small"></i><a href="#" class="uk-link-muted">@post.Category.Name</a>
                 </p>
                 <p>
                     <a href=" @Url.Action("Details","BlogPosts",new { Id = post.Id })">
-                        <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"]+post.Picture))?w=900&h=300&mode=crop" alt="@post.Title">
+                        <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"]+post.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@post.Title">
                     </a>
                 </p>
                 <h3 class="tm-article-subtitle">خطلاصه مطلب</h3>
-                <p class="uk-text-justify">@post.Preview</p>
+                <p class="uk-text-justify">@Html.Raw(post.Preview)</p>
                 <p>
                     <a class="uk-button uk-button-primary" href="@Url.Action("Details","BlogPosts",new {Id = post.Id })">ادامه مطلب</a>
                     <a class="uk-button" href="layouts_post.html">4 نظر</a>
                 </p>
             </article>
-                <hr class="uk-article-divider">
+            <hr class="uk-article-divider">
         }
 
     </div>
