@@ -52,7 +52,7 @@
         <div class="uk-form-row">
             @Html.LabelFor(model => model.Preview, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Preview, new { htmlAttributes = new { @class = "uk-width-1-1" } })
+                @Html.EditorFor(model => model.Preview, new { htmlAttributes = new { @class = "uk-width-1-1 ckeditor" } })
                 @Html.ValidationMessageFor(model => model.Preview, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -83,17 +83,7 @@
                 @Html.ValidationMessageFor(model => model.PublishDate, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="uk-form-row">
-            @Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "uk-form-label" })
-            <div class="uk-form-controls">
-                @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "" } })
-                @Html.ValidationMessageFor(model => model.CreateDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-
+                
         <div class="uk-form-row">
             <div class="col-md-offset-2 uk-form-controls">
                 <input type="submit" value="ذخیره" class="uk-button uk-button-success " />
