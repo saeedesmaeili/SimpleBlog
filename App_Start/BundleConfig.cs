@@ -29,7 +29,6 @@ namespace Blog
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushSql.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushXml.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushPowerShell.js",
-                      "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushCss.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushCss.js"
                       ));
 
