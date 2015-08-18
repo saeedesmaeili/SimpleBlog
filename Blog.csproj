@@ -76,6 +76,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -205,7 +206,9 @@
     </Compile>
     <Compile Include="Helpers\BlogPostsDynamicNodeProvider.cs" />
     <Compile Include="Helpers\PersianDateExtension.cs" />
+    <Compile Include="Helpers\RssActionResult.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ArchiveItemViewModel.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\DbContext.cs" />
@@ -383,6 +386,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\me.jpg" />
     <Content Include="mstile-144x144.png" />
     <Content Include="mstile-150x150.png" />
     <Content Include="mstile-310x150.png" />
@@ -969,6 +973,7 @@
     <Content Include="Scripts\syntaxhighlighter_3.0.83\tests\webrick.rb" />
     <Content Include="Scripts\syntaxhighlighter_3.0.83\tests\webrick.sh" />
     <Content Include="Views\BlogPosts\Edit.cshtml" />
+    <Content Include="Views\BlogPosts\_Archive.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
