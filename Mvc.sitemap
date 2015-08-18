@@ -9,9 +9,9 @@
         <mvcSiteMapNode title="a" controller="BlogPosts" action="Details" key="BlogPosts_Details" preservedRouteParameters="id"   visibility="SiteMapPathHelper,!*"  />
         <mvcSiteMapNode title="افزودن پست جدید" controller="BlogPosts" action="Create" key="BlogPosts_Create"  preservedRouteParameters="id"   visibility="SiteMapPathHelper,!*"  />
       </mvcSiteMapNode>
+      <mvcSiteMapNode title="آرشیو" action="ShowArchive" controller="BlogPosts" key="BlogPosts_ShowArchive"  visibility="SiteMapPathHelper,!*" />
       <mvcSiteMapNode title="posts" dynamicNodeProvider="Blog.Helpers.BlogPostsDynamicNodeProvider, Blog"  visibility="XmlSiteMapResult,!*"  />
     </mvcSiteMapNode>
     <mvcSiteMapNode title="تماس با من" controller="Home" action="ContactMe"/>
-    <mvcSiteMapNode title="نمونه کارها" controller="Works" action="Index"/>
   </mvcSiteMapNode>
 </mvcSiteMap>
