@@ -7,6 +7,38 @@ namespace Blog.Helpers
 {
     public static class PersianDateExtension
     {
+        public static string GetPersianMounthName(this int mounth)
+        {
+            string MonthName = "فروردین";
+            switch (mounth)
+            {
+                case 1: { MonthName = "فروردین"; break; }
+                case 2: { MonthName = "اردیبهشت"; break; }
+                case 3: { MonthName = "خرداد"; break; }
+                case 4: { MonthName = "تیر"; break; }
+                case 5: { MonthName = "مرداد"; break; }
+                case 6: { MonthName = "شهریور"; break; }
+                case 7: { MonthName = "مهر"; break; }
+                case 8: { MonthName = "آبان"; break; }
+                case 9: { MonthName = "آذر"; break; }
+                case 10: { MonthName = "دی"; break; }
+                case 11: { MonthName = "بهمن"; break; }
+                case 12: { MonthName = "اسفند"; break; }
+                default: { MonthName = "فروردین"; break; }
+            }
+            return MonthName;
+        }
+        public static int GetPersianYear(this DateTime date) {
+            System.Globalization.PersianCalendar p = new System.Globalization.PersianCalendar();
+            int Year = p.GetYear(date);
+            return Year;
+        }
+        public static int GetPersianMonth(this DateTime date)
+        {
+            System.Globalization.PersianCalendar p = new System.Globalization.PersianCalendar();
+            int Month = p.GetMonth(date); 
+            return Month;
+        }
         public static string GetPersianYearAndMounth(this DateTime date)
         {
             System.Globalization.PersianCalendar p = new System.Globalization.PersianCalendar();
