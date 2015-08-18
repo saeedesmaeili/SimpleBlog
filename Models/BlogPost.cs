@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Blog.Helpers;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,10 +17,10 @@ namespace Blog.Models
         }
         public Guid Id { get; set; }
 
-        [Display(Name ="عنوان مطلب")]
+        [Display(Name = "عنوان مطلب")]
         public string Title { get; set; }
 
-        [Display(Name ="تصویر")]
+        [Display(Name = "تصویر")]
         public string Picture { get; set; }
 
 
@@ -45,9 +46,27 @@ namespace Blog.Models
         [Display(Name = "منتشر شده")]
         public bool IsPublished { get; set; }
 
+
+        private DateTime _publishDate;
         [Display(Name = "تاریخ انتشار")]
         [UIHint("PersianDateTime")]
-        public DateTime PublishDate { get; set; }
+        public DateTime PublishDate
+        {
+            get
+            {
+                return this._publishDate;
+            }
+            set
+            {
+                this._publishDate = value;
+                this.PublishShamsiMounth = value.GetPersianMonth();
+                this.PublishShamsiYear = value.GetPersianYear();
+            }
+        }
+
+        public int PublishShamsiMounth { get; set; }
+
+        public int PublishShamsiYear { get; set; }
 
         [Display(Name = "تاریخ تولید")]
         [UIHint("PersianDate")]
@@ -65,6 +84,6 @@ namespace Blog.Models
 
         [Display(Name = "برچسب ها")]
         public virtual ICollection<Tag> Tags { get; set; }
-        
+
     }
 }
