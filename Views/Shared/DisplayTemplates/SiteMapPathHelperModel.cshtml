@@ -7,7 +7,14 @@
     {
         if (node == Model.Last())
         {
-            <li class="uk-active"><span>@node.Title</span></li>
+            <li class="uk-active">
+                @*Show Rss Link in Breadcrumb*@
+                @if (node.Action.ToString().ToLower() == "showbycategory" && node.Controller.ToString().ToLower() == "blogposts" && node.RouteValues.ContainsKey("id"))
+                {
+                    <a href="@Url.Action("Rss", "Categories", new { id = node.RouteValues["id"].ToString()})" class="uk-icon-rss-square uk-text-warning"></a>
+                }
+                <span>@node.Title</span>
+            </li>
         }
         else
         {
