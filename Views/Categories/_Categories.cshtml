@@ -4,10 +4,11 @@
     var firstLevel = Model.Where(x => x.ParentId == Guid.Empty).ToList();
 }
 
-
+    <div class="uk-text-center">
+        <a href="@Url.Action("Rss","Categories")" class="uk-icon-rss" style="font-size:90px;"></a>
+    </div>
+    <hr class="uk-grid-divider" />
     <ul class="tm-nav uk-nav uk-nav-parent-icon uk-nav-side" data-uk-nav="{}">
-        <li class="uk-nav-header uk-text-large">شاخه ها</li>
-        <li class="uk-nav-divider"></li>
         @helper RecurseSomething(Category item)
         {
 if (Model.Any(x => x.ParentId == item.Id))
