@@ -80,3 +80,7 @@ C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.
 C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Mvc.xml
 C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Plugins.DiskCache.xml
 C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\ImageResizer.Plugins.PrettyGifs.xml
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\JetBrains.Annotations.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\RazorGenerator.Mvc.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\reCaptcha.dll
+C:\Users\Saeed\Documents\Visual Studio 2015\Projects\Blog\Blog\bin\JetBrains.Annotations.xml

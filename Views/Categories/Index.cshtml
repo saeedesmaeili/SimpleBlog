@@ -1,0 +1,57 @@
+﻿@using Blog.Models
+@model IEnumerable<Category>
+@{
+    var firstLevel = Model.Where(x => x.ParentId == Guid.Empty).ToList();
+}
+
+<h1>
+    <i class="uk-icon-cogs uk-margin-small-right"></i>مدیریت شاخه ها
+</h1>
+<hr />
+<a href="@Url.Action("Create","Categories")" class="uk-button uk-button-mini uk-button-success">افزودن شاخه جدید</a>
+<ul class="uk-nestable" data-uk-nestable="{}">
+    @helper RecurseSomething(Category item)
+        {
+        if (Model.Any(x => x.ParentId == item.Id))
+        {
+                <li class="uk-nestable-item uk-parent">
+                    <div class="uk-nestable-panel">
+                        <i class="uk-nestable-handle uk-icon @item.IconClass uk-margin-small-right"></i>
+                        @item.Name
+                        <div class="uk-text-right uk-align-right">
+                            <a href="@Url.Action("Edit","Categories",new { id = item.Id})" class="uk-button uk-button-mini uk-button-success">ویرایش</a>
+                            <a href="@Url.Action("Delete","Categories",new { id = item.Id})" class="uk-button uk-button-mini uk-button-danger">حذف</a>
+                        </div>
+                    </div>
+                    <ul class="uk-nestable-list">
+                        @foreach (var subData in Model.Where(x => x.ParentId == item.Id).ToList())
+                        {
+                            @RecurseSomething(subData);
+                        }
+                    </ul>
+                </li>
+        }
+        else
+        {
+                <li class="uk-nestable-item">
+                    <div class="uk-nestable-panel">
+                        <i class="uk-nestable-handle uk-icon @item.IconClass uk-margin-small-right"></i>
+                        @item.Name
+                        <div class="uk-text-right uk-align-right">
+                            <a href="@Url.Action("Edit","Categories",new { id = item.Id})" class="uk-button uk-button-mini uk-button-success">ویرایش</a>
+                            <a href="@Url.Action("Delete","Categories",new { id = item.Id})" class="uk-button uk-button-mini uk-button-danger">حذف</a>
+                        </div>
+                    </div>
+                </li>
+        }
+    }
+    @foreach (var item in firstLevel)
+    {
+        @RecurseSomething(item)
+    }
+</ul>
+
+
+@*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@

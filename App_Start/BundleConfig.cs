@@ -33,8 +33,15 @@ namespace Blog
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
-                      "~/ckeditor/ckeditor.js"));
-            
+                      "~/ckeditor/ckeditor.js",
+                      "~/Scripts/jquery-ui.js",
+                      "~/Scripts/calendar.js",
+                      "~/Scripts/jquery.ui.datepicker-cc-fa.js",
+                      "~/Scripts/components/nestable.js"
+                       ));
+
+            bundles.Add(new StyleBundle("~/Content/admincss").Include(
+                       "~/Content/jquery-ui-1.11.3.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/uikit.rtl.css",

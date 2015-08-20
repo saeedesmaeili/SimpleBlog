@@ -7,6 +7,13 @@
 <div class="uk-grid" data-uk-grid-margin="">
     <div class="uk-width-medium-3-4">
         @Html.MvcSiteMap().SiteMapPath()
+        @if (User.IsInRole("Author") || User.IsInRole("Admin"))
+        {
+            <p>
+                <a href="@Url.Action("Edit", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-success"> ویرایش </a>
+                <a href="@Url.Action("Delete", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-danger"> حذف </a>
+            </p>
+        }
         <article class="uk-article">
 
             <h2 class="uk-article-title">
@@ -56,15 +63,15 @@
         <div class="uk-panel uk-panel-box uk-text-center">
             <img class="uk-border-circle" width="120" height="120" src="@Url.Content("~/images/me.jpg")" alt="سعید اسماعیلی Saeed Esmaeili">
             <h3>سعید اسماعیلی</h3>
-            <p>UX Designer<br/>Web Developer</p>
+            <p>UX Designer<br />Web Developer</p>
         </div>
         <div class="uk-panel ">
             <h3 class="uk-panel-title">آرشیو</h3>
             <ul class="uk-list uk-list-line ">
-                @Html.Action("Archive","BlogPosts")
+                @Html.Action("Archive", "BlogPosts")
             </ul>
         </div>
-       
+
     </div>
 
 </div>

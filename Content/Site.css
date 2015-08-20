@@ -183,11 +183,18 @@ html {
     }
 }
 
+/*.tm-blogcategoryitem {
+    background-color:#E6F9FF;
+    padding : 1px 8px;
+}*/
 
-.uk-nav-sub li {
-    background-color: #F5F5F5;
-    margin-top : 2px;
+.tm-blogcategoryitem-selected {
+    background-color:#F5F5F5;
+    /*padding : 1px 8px;*/
 }
+
+
+
 .uk-nav-sub li a {
     color: black;
 }

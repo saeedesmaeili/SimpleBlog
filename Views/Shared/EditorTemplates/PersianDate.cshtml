@@ -1,0 +1,61 @@
+@model DateTime?
+
+
+
+@*@if (Session["LanguageCulture"].ToString() == "fa-IR")
+    {*@
+
+@Html.Hidden("", Model, new { @class = "MainDatePicker" })
+@Html.TextBox("EnglishDateTextbox", Blog.Helpers.PersianDateExtension.GetPersianDateString(Model), new { @class = "AlternativeDatePicker" })
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".AlternativeDatePicker").datepicker({
+                dateFormat: 'd MM yy',
+                onSelect: function (dateText, inst) {
+                    var date = new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']).getGregorianDate();
+
+                    var month = date.getMonth() + 1;
+                    if (month <= 9)
+                        month = '0' + month.toString();
+                    var day = date.getDate();
+                    if (day <= 9)
+                        day = '0' + day.toString();
+                    var textboxname = $(this).attr('name');
+                    var textboxnamewithoutprefix = textboxname.substring(0, textboxname.indexOf('.EnglishDateTextbox'));
+                    document.getElementById(textboxnamewithoutprefix).value = date.getFullYear() + '/' + month + '/' + day;
+                }
+            });
+
+        });
+
+
+    </script>
+
+@*}else{
+        @Html.Hidden("",  Model, new { @class = "MainDatePicker" })
+        if (Model == null)
+        {
+            @Html.TextBox("EnglishDateTextbox",Model, new { @class = "AlternativeDatePicker" });
+        }else{
+        @Html.TextBox("EnglishDateTextbox",((DateTime)Model).ToString("d MMM yyyy"), new { @class = "AlternativeDatePicker" });
+    }
+
+
+        <script  type="text/javascript">
+
+            $(document).ready(function () {
+                $(".AlternativeDatePicker").datepicker({
+                    dateFormat: 'd MM yy',
+                    onSelect: function (dateText, inst) {
+
+                        var textboxname = $(this).attr('name');
+                        var textboxnamewithoutprefix = textboxname.substring(0, textboxname.indexOf('.EnglishDateTextbox'));
+                        document.getElementById(textboxnamewithoutprefix).value = dateText;
+                    }
+                });
+
+            });
+      </script>
+    }*@

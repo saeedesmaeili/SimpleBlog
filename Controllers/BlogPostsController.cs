@@ -51,45 +51,65 @@ namespace Blog.Controllers
 
         public ActionResult ShowByCategory(Guid? id)
         {
-
+            var category = db.Categories.Find(id);
             var posts = from p in db.BlogPosts select p;
             if (id != null)
             {
                 ViewBag.CategoryId = id;
                 posts = posts.Where(x => x.CategoryId == id);
+                ViewBag.CategoryParentId = category.ParentId;
 
                 // SiteMap and Breadcrumb
                 var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Category");
                 if (node != null)
                 {
-                    node.Title = db.Categories.Where(c => c.Id == id).First().Name;
+                    node.Title = category.Name;
                 }
 
             }
-            return View("Index", posts
-                                    .Include("Author")
-                                    .OrderByDescending(x=>x.PublishDate)
-                                    .ToList()
-                        );
+
+            if (!(User.IsInRole("Admin") || User.IsInRole("Author")))
+            {
+                posts = posts.Where(x => x.IsPublished);
+            }
+            
+
+                return View("Index", posts
+                                        .Include("Author")
+                                        .OrderByDescending(x => x.PublishDate)
+                                        .ToList()
+                            );
         }
 
-        public ActionResult ShowArchive(int year, int mounth) {
+        public ActionResult ShowArchive(int year, int mounth)
+        {
 
             var posts = from p in db.BlogPosts select p;
 
+            // Set Beardcrumb
             var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_ShowArchive");
             if (node != null)
             {
-                node.Title = "آرشیو "  + mounth.GetPersianMounthName() + " ماه "+year;
+                node.Title = "آرشیو " + mounth.GetPersianMounthName() + " ماه " + year;
             }
-            
+
+            // Show UnPublished Post if user is in Role admin or Author 
+            if (User.IsInRole("Admin") || User.IsInRole("Author"))
+            {
+                posts = posts.Where(x => x.PublishShamsiYear == year && x.PublishShamsiMounth == mounth);
+            }
+            else
+            {
+                posts = posts.Where(x => x.PublishShamsiYear == year && x.PublishShamsiMounth == mounth && x.IsPublished);
+            }
+
             return View("Index", posts
-                                .Where(x=>x.PublishShamsiYear == year && x.PublishShamsiMounth == mounth)
                                 .OrderByDescending(x => x.PublishDate)
                                 .Include("Author")
                                 .ToList()
                         );
         }
+
         public ActionResult Archive()
         {
             return PartialView("_Archive", db.BlogPosts
@@ -106,13 +126,14 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Create(Guid? id)
         {
+            var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Details");
+
+            // if Category Selected and We Have it
             if (id != null)
             {
-                //ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", id);
-                ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", id);
+                ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", id);
                 // SiteMap and Breadcrumb
                 Category category = db.Categories.Find(id);
-                var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Details");
                 if (node.ParentNode != null)
                 {
                     node.ParentNode.Title = category.Name;
@@ -121,16 +142,17 @@ namespace Blog.Controllers
             }
             else
             {
-                //ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name");
-                ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
-                var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Details");
+                ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name");
                 if (node.ParentNode != null)
                 {
                     node.ParentNode.Title = "شاخه نامشخص";
                     node.ParentNode.RouteValues["id"] = "";
                 }
             }
-            return View();
+
+            BlogPost post = new BlogPost();
+            post.PublishDate = DateTime.Now;
+            return View(post);
         }
 
         // POST: BlogPosts/Create
@@ -170,7 +192,7 @@ namespace Blog.Controllers
                 return RedirectToAction("ShowByCategory", new { id = blogPost.CategoryId });
             }
 
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", blogPost.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 
@@ -188,7 +210,7 @@ namespace Blog.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", blogPost.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 
@@ -219,13 +241,14 @@ namespace Blog.Controllers
 
             blogPost.AuthorId = currentUser.Id.ToString();
             blogPost.LastModifiedDate = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 db.Entry(blogPost).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("ShowByCategory", new { id = blogPost.CategoryId });
             }
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", blogPost.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 

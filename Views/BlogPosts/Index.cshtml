@@ -7,7 +7,7 @@
 
 <div class="uk-grid" data-uk-grid-margin="">
     <div class="tm-sidebar uk-width-medium-1-4 uk-hidden-small">
-        @Html.Action("Menu", "Categories")
+        @Html.Action("Menu", "Categories", new { SelectedCategoryId = ViewBag.CategoryId, SelectedCategoryParentId = ViewBag.CategoryParentId })
     </div>
     <div class="tm-main uk-width-medium-3-4">
         @Html.MvcSiteMap().SiteMapPath()
@@ -17,18 +17,13 @@
             <hr />
         }
         @foreach (var post in Model)
-            {
-            <article class="uk-article uk-margin-large-bottom">
+        {
+
+            <article class="uk-article uk-margin-large-bottom @Html.Raw(!post.IsPublished ? "uk-block-secondary uk-contrast\" style=\"padding:30px;" : "")">
 
                 <h3 class="uk-article-title" style="font-size:26px">
                     <a href=" @Url.Action("Details","BlogPosts",new { Id = post.Id })">@post.Title</a>
                 </h3>
-                @if (User.IsInRole("Author") || User.IsInRole("Admin"))
-                {
-                    <a href="@Url.Action("Edit", "BlogPosts", new { id = post.Id })"> ویرایش </a>
-                }
-
-
                 <p class="uk-article-meta ">
                     <i class="uk-icon-user  uk-margin-small-right uk-icon-small"></i>@post.Author.FirstName @post.Author.LastName
                     <i class="uk-icon-calendar uk-margin-small-right uk-margin-left uk-icon-small"></i>@Html.DisplayFor(modelItem => post.PublishDate)
@@ -44,6 +39,11 @@
                 <p>
                     <a class="uk-button uk-button-primary" href="@Url.Action("Details","BlogPosts",new {Id = post.Id })">ادامه مطلب</a>
                     <a class="uk-button" href="layouts_post.html">4 نظر</a>
+                    @if (User.IsInRole("Author") || User.IsInRole("Admin"))
+                    {
+                        <a href="@Url.Action("Edit", "BlogPosts", new { id = post.Id })" class="uk-button uk-button-success"> ویرایش </a>
+                        <a href="@Url.Action("Delete", "BlogPosts", new { id = post.Id })" class="uk-button uk-button-danger"> حذف </a>
+                    }
                 </p>
             </article>
             <hr class="uk-article-divider">
