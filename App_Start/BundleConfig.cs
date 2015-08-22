@@ -22,7 +22,6 @@ namespace Blog
             bundles.Add(new ScriptBundle("~/bundles/uikit").Include(
                       "~/Scripts/uikit.js",
                       "~/Scripts/components/sticky.js",
-                      "~/Scripts/jquery-scrollspeed.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shCore.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushCSharp.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js",

@@ -1,0 +1,34 @@
+﻿@model   PagedList.IPagedList<Blog.Models.BlogPost>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "جستجو-" + @ViewBag.SearchTerm;
+}
+
+<h1><i class="uk-icon-search uk-margin-right"></i>جستجو : @ViewBag.SearchTerm</h1>
+<hr />
+@foreach (Blog.Models.BlogPost post in (PagedList.IPagedList<Blog.Models.BlogPost>)Model)
+{
+    @Html.Partial("_PostPreview", post)
+    <hr class="uk-article-divider">
+}
+
+<div class="uk-visible-small">
+    @Html.PagedListPager(Model, page => Url.Action("Index", "Search", new { id = ViewBag.CategoryId, page , query = ViewBag.SearchTerm }), new PagedListRenderOptions()
+{
+    UlElementClasses = new List<string>() { "uk-pagination" },
+    LiElementClasses = new List<string>() { "" },
+    MaximumPageNumbersToDisplay = 5,
+    DisplayLinkToNextPage = PagedListDisplayMode.Never,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Never
+})
+</div>
+<div class="uk-hidden-small">
+    @Html.PagedListPager(Model, page => Url.Action("Index", "Search", new { id = ViewBag.CategoryId, page, query = ViewBag.SearchTerm }), new PagedListRenderOptions()
+{
+    UlElementClasses = new List<string>() { "uk-pagination" },
+    LiElementClasses = new List<string>() { "" },
+    MaximumPageNumbersToDisplay = 10
+
+})
+</div>

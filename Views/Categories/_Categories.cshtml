@@ -4,50 +4,40 @@
     var firstLevel = Model.Where(x => x.ParentId == Guid.Empty).ToList();
 }
 
-<div class="uk-text-center">
-    <a href="@Url.Action("Rss","Categories")" class="uk-icon-rss" style="font-size:90px;"></a>
-</div>
-<hr class="uk-grid-divider" />
-@if (User.IsInRole("Admin"))
+@helper RecurseSomething(Category item)
 {
-    <a href="@Url.Action("Index","Categories")" class="uk-button uk-button-primary uk-margin-bottom uk-width-1-1 uk-text-left"><i class="uk-icon-cogs uk-margin-small-right"></i>مدیریت شاخه ها</a>
-}
-<ul class="tm-nav uk-nav uk-nav-parent-icon uk-nav-side" data-uk-nav="{}">
-    @helper RecurseSomething(Category item)
-        {
-if (Model.Any(x => x.ParentId == item.Id))
-{
-        <li class="uk-parent @(ViewBag.SelectedCategoryParentId == item.Id ? "uk-active" : "") ">
+    if (Model.Any(x => x.ParentId == item.Id))
+    {
+        <li class="uk-parent @(ViewBag.SelectedCategoryParentId == item.Id || Model.Where(x=>x.ParentId == item.Id).Any(x => x.Id == ViewBag.SelectedCategoryParentId) ? "uk-active" : "") ">
             @if (item.ParentId == Guid.Empty)
             {
                 <a href="#"><i class="@item.IconClass uk-margin-small-right"></i>@item.Name</a>
             }
             else
             {
-                <a href="@Url.Action("ShowByCategory", "BlogPosts", new { id = item.Id ,name = item.Name.Replace(" ","-")})">
+                <a href="@Url.Action("ShowByCategory", "BlogPosts", new { id = item.Id ,name = item.Name.Replace(" ","-")})" class="@(ViewBag.SelectedCategoryId == item.Id ? "tm-blogcategoryitem-selected":"")">
                     <i class="@item.IconClass uk-margin-small-right"></i>@item.Name
                 </a>
             }
             <ul class="uk-nav-sub">
-                @foreach (var subData in Model.Where(x => x.ParentId == item.Id).ToList())
+                @foreach (var subCategories in Model.Where(x => x.ParentId == item.Id).ToList())
                 {
-                    @RecurseSomething(subData);
+                    @RecurseSomething(subCategories);
                 }
             </ul>
         </li>
-}
-else
-{
+    }
+    else
+    {
         <li class="tm-blogcategoryitem @(ViewBag.SelectedCategoryId == item.Id ? "uk-active tm-blogcategoryitem-selected":"")">
-            <a href="@Url.Action("ShowByCategory", "BlogPosts", new { id = item.Id, name = item.Name.Replace(" ", "-") })">
+            <a href="@Url.Action("ShowByCategory", "BlogPosts", new { id = item.Id, name = item.Name.Replace(" ", "-") })" class="@(ViewBag.SelectedCategoryId == item.Id ? "tm-blogcategoryitem-selected":"")">
                 <i class="@item.IconClass uk-margin-small-right"></i>@item.Name
             </a>
         </li>
-}
-}
-    @foreach (var item in firstLevel)
-    {
-        @RecurseSomething(item)
     }
-</ul>
+}
+@foreach (var item in firstLevel)
+{
+    @RecurseSomething(item)
+}
 

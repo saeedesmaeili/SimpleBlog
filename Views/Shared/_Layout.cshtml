@@ -37,7 +37,7 @@
         @Scripts.Render("~/bundles/admin")
     }
     @Scripts.Render("~/bundles/modernizr")
-    
+
     @Scripts.Render("~/bundles/uikit")
 
 </head>
@@ -51,7 +51,8 @@
                 <img class="uk-margin uk-margin-remove uk-responsive-height" src="@Url.Content("~/Images/logo.png")" title="سعید اسماعیلی - Saeed Esmaeili" alt="سعید اسماعیلی - Saeed Esmaeili">
             </a>
             <ul class="uk-navbar-nav uk-hidden-small">
-                @Html.MvcSiteMap().Menu(false,new { name = "MainMenu" })
+                @Html.MvcSiteMap().Menu(false, new { name = "MainMenu" })
+
             </ul>
             <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
             <div class="uk-navbar-brand uk-navbar-center uk-visible-small">
@@ -85,25 +86,50 @@
 
     <div id="offcanvas" class="uk-offcanvas">
         <div class="uk-offcanvas-bar">
-            <ul class="uk-nav uk-nav-offcanvas">
-                @Html.MvcSiteMap().Menu(false,new { name = "MainMenu" })
+            @*<ul class="uk-nav tm-offcanvas-nav uk-nav-parent-icon uk-nav-offcanvas" data-uk-nav="{}">
+                    <li>
+                        <a href="">خانه</a>
+                    </li>
+                    <li class="uk-parent ">
+                        <a href="#">وبلاگ</a>
+                        <ul class="uk-subnav">
+                            @Html.Action("Menu", "Categories", new { SelectedCategoryId = ViewBag.CategoryId, SelectedCategoryParentId = ViewBag.CategoryParentId })
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">تمای با من</a>
+                    </li>
+                </ul>*@
+
+            <div class="uk-panel ">
+                <form class="uk-form " role="search" method="post" action="@Url.Action("Search","Search")">
+                    @Html.AntiForgeryToken()
+                    <div class="uk-form-icon uk-width-1-1">
+                        <i class="uk-icon-search"></i>
+                        <input name="query" type="text" value="@ViewBag.SearchTerm" class="uk-width-1-1">
+                    </div>
+                </form>
+            </div>
+
+            <ul class="uk-nav tm-offcanvas-nav uk-nav-parent-icon uk-nav-offcanvas" data-uk-nav="{}">
+
+                <li class="uk-nav-header">شاخه های وبلاگ</li>
+                @Html.Action("Menu", "Categories", new { SelectedCategoryId = ViewBag.CategoryId, SelectedCategoryParentId = ViewBag.CategoryParentId })
+                <li class="uk-nav-header">منو اصلی</li>
+                @Html.MvcSiteMap().Menu(false, new { name = "offcanvas" })
             </ul>
         </div>
     </div>
 
-   
+
     @if (User.IsInRole("Admin"))
     {
-        <script >
+        <script>
             $(function () {
                 $(".ckeditor").ckeditor();
             });
         </script>
     }
     @RenderSection("scripts", required: false)
-    <script>
-        SyntaxHighlighter.all();
-        $.scrollSpeed(100, 800);
-    </script>
 </body>
 </html>

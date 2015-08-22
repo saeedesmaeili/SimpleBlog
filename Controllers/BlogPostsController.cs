@@ -4,8 +4,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MvcSiteMapProvider;
 using MvcSiteMapProvider.Web.Mvc.Filters;
+using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -18,6 +20,7 @@ namespace Blog.Controllers
 {
     public class BlogPostsController : Controller
     {
+
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -49,8 +52,9 @@ namespace Blog.Controllers
             return View(blogPost);
         }
 
-        public ActionResult ShowByCategory(Guid? id)
+        public ActionResult ShowByCategory(Guid? id, int? page)
         {
+            int BlogPostsPageSize = int.Parse(ConfigurationManager.AppSettings["BlogPostsPageSize"]);
             var category = db.Categories.Find(id);
             var posts = from p in db.BlogPosts select p;
             if (id != null)
@@ -72,13 +76,10 @@ namespace Blog.Controllers
             {
                 posts = posts.Where(x => x.IsPublished);
             }
-            
-
-                return View("Index", posts
-                                        .Include("Author")
-                                        .OrderByDescending(x => x.PublishDate)
-                                        .ToList()
-                            );
+            posts = posts
+                        .Include("Author")
+                        .OrderByDescending(x => x.PublishDate);
+            return View("Index", posts.ToPagedList((page ?? 1) , BlogPostsPageSize));
         }
 
         public ActionResult ShowArchive(int year, int mounth)
