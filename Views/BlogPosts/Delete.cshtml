@@ -1,0 +1,18 @@
+﻿@model Blog.Models.BlogPost
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>آیا از حذف " @Model.Title " اطمینان دارید ؟</h2>
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("urlReferrer", Request.UrlReferrer)
+        <div class="form-actions no-color">
+            <button type="submit" class="uk-button uk-button-danger"><i class="uk-icon-trash-o uk-margin-small-right"></i>حذف</button>
+            <a class="uk-button uk-button-success" href="@Request.UrlReferrer"><i class="uk-icon-mail-reply uk-margin-small-right"></i>بازگشت</a>
+        </div>
+    }
+</div>

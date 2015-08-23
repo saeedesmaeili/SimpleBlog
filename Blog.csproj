@@ -1000,6 +1000,7 @@
     <Content Include="Views\Home\MailSent.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Shared\_PostPreview.cshtml" />
+    <Content Include="Views\BlogPosts\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

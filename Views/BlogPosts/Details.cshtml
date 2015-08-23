@@ -5,19 +5,24 @@
 }
 
 <div class="uk-grid" data-uk-grid-margin="">
-    <div class="uk-width-medium-3-4">
+    <div class="uk-width-large-3-4">
         @Html.MvcSiteMap().SiteMapPath()
         @if (User.IsInRole("Author") || User.IsInRole("Admin"))
         {
-            <p>
-                <a href="@Url.Action("Edit", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-success"> ویرایش </a>
-                <a href="@Url.Action("Delete", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-danger"> حذف </a>
-            </p>
+            <form id="deletePost" action="@Url.Action("Delete","BlogPosts")" method="post">
+                <input type="hidden" name="id" id="id" value="@Model.Id" />
+                @Html.Hidden("urlReferrer", Request.UrlReferrer == null ? Url.Action("ShowByCategory", "BlogPosts") : Request.UrlReferrer.ToString()) )
+                @Html.AntiForgeryToken()
+                <p>
+                    <a href="@Url.Action("Edit", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-success"> ویرایش </a>
+                    <button type="submit" class="uk-button uk-button-danger"><i class="uk-icon-trash-o uk-margin-small-right"></i>حذف</button>
+                </p>
+            </form>
         }
         <article class="uk-article">
 
             <h2 class="uk-article-title">
-                <a href=" @Url.Action("Details","BlogPosts",new { Id = Model.Id })">@Model.Title</a>
+                <a href="#">@Model.Title</a>
             </h2>
 
             <p class="uk-article-meta ">
@@ -26,7 +31,7 @@
                 <i class="@Model.Category.IconClass  uk-margin-small-right uk-margin-left uk-icon-small"></i><a href="@Url.Action("ShowByCategory","BlogPosts",new { id=Model.CategoryId })" class="uk-link-muted">@Model.Category.Name</a>
             </p>
             <p>
-                <a href=" @Url.Action("Details","BlogPosts",new { Id = Model.Id })">
+                <a href="#">
                     <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"]+Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title" />
                 </a>
             </p>
@@ -46,7 +51,7 @@
 
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_identifier = '@Model.Id';
-            var disqus_shortname = 'saeedesmaeili'; // Required - Replace '<example>' with your forum shortname
+            var disqus_shortname = '@WebConfigurationManager.AppSettings["disqus_shortname"]'; // Required - Replace '<example>' with your forum shortname
 
             /* * * DON'T EDIT BELOW THIS LINE * * */
             (function () {
@@ -59,14 +64,14 @@
 
     </div>
 
-    <div class="uk-width-medium-1-4">
+    <div class="uk-width-large-1-4">
         <div class="uk-panel uk-panel-box uk-text-center">
             <img class="uk-border-circle" width="120" height="120" src="@Url.Content("~/images/me.jpg")" alt="سعید اسماعیلی Saeed Esmaeili">
             <h3>سعید اسماعیلی</h3>
             <p>UX Designer<br />Web Developer</p>
         </div>
-        <div class="uk-panel ">
-            <h3 class="uk-panel-title">آرشیو</h3>
+        <div class="uk-panel uk-panel-box">
+            <h3 class="uk-panel-title"><i class="uk-icon-archive uk-margin-small-right"></i>آرشیو</h3>
             <ul class="uk-list uk-list-line ">
                 @Html.Action("Archive", "BlogPosts")
             </ul>
@@ -75,3 +80,16 @@
     </div>
 
 </div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#deletePost').submit(function (e) {
+                e.preventDefault();
+                if (confirm("آیا از حذف این پست اطمینان دارید؟")) {
+                    $("#deletePost").unbind("submit").submit();
+                }
+            });
+        });
+    </script>
+}

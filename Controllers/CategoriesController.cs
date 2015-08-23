@@ -26,7 +26,9 @@ namespace Blog.Controllers
             {
                 ViewBag.SelectedCategoryParentId = SelectedCategoryParentId;
                 ViewBag.SelectedCategoryId = SelectedCategoryId;
-                return PartialView("_Categories", db.Categories.ToList());
+                return PartialView("_Categories", db.Categories
+                                                    .OrderBy(x=>x.Order)
+                                                    .ToList());
             }
         }
 
@@ -77,7 +79,10 @@ namespace Blog.Controllers
         // GET: Categories1
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
+            return View(db.Categories
+                            .OrderBy(x => x.Order)
+                            .ToList()
+                        );
         }
 
 
@@ -156,7 +161,7 @@ namespace Blog.Controllers
         }
 
         // GET: Categories1/Delete/5
-        public ActionResult Delete(Guid? id)
+        public ActionResult Delete(Guid? id , string message)
         {
             if (id == null)
             {
@@ -167,6 +172,13 @@ namespace Blog.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (!string.IsNullOrEmpty(message ?? ""))
+            {
+                ViewBag.message = message.ToString();
+                return View(category);
+            }
+
             return View(category);
         }
 
@@ -176,6 +188,10 @@ namespace Blog.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Category category = db.Categories.Find(id);
+            if (db.Categories.Where(x => x.ParentId == id).Count() > 0 || db.BlogPosts.Where(x=>x.CategoryId == id).Count() > 0)
+            {
+                return RedirectToAction("Delete", new { id = id , message = "ابتدا زیر شاخه ها و پست های این شاخه را حذف کنید" });
+            }
             db.Categories.Remove(category);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -17,7 +17,8 @@ namespace Blog.Controllers
         
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("ShowByCategory", "BlogPosts");
+            //return View();
         }
 
         public ActionResult AboutMe()

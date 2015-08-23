@@ -27,19 +27,17 @@ namespace Blog.Controllers
         // GET: BlogPosts
 
         [SiteMapTitle("Title")]
-        public ActionResult Details(Guid? id)
+        public ActionResult Details(Guid? id , Guid? postId)
         {
-            BlogPost blogPost = db.BlogPosts.Find(id);
+            BlogPost blogPost = db.BlogPosts.Find(postId);
 
             // SiteMap and Breadcrumb
-            var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Details");
-            if (node.ParentNode != null)
+            var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Category");
+            if (node != null)
             {
-                node.ParentNode.Title = blogPost.Category.Name;
-                node.ParentNode.RouteValues["id"] = blogPost.CategoryId;
+                node.Title = blogPost.Category.Name;
             }
-
-            if (id == null)
+            if (postId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -82,9 +80,10 @@ namespace Blog.Controllers
             return View("Index", posts.ToPagedList((page ?? 1) , BlogPostsPageSize));
         }
 
-        public ActionResult ShowArchive(int year, int mounth)
+        public ActionResult ShowArchive(int year, int mounth , int? page)
         {
 
+            int BlogPostsPageSize = int.Parse(ConfigurationManager.AppSettings["BlogPostsPageSize"]);
             var posts = from p in db.BlogPosts select p;
 
             // Set Beardcrumb
@@ -107,7 +106,7 @@ namespace Blog.Controllers
             return View("Index", posts
                                 .OrderByDescending(x => x.PublishDate)
                                 .Include("Author")
-                                .ToList()
+                                .ToPagedList((page ?? 1), BlogPostsPageSize)
                         );
         }
 
@@ -120,14 +119,18 @@ namespace Blog.Controllers
                                                 Mounth = x.PublishShamsiMounth
                                             })
                                             .OrderByDescending(o => o.Key.Year)
-                                            .ThenBy(n => n.Key.Mounth).Select(x => new ArchiveItemViewModel() { Year = x.Key.Year, Mounth = x.Key.Mounth }));
+                                            .ThenBy(n => n.Key.Mounth)
+                                            .Select(x => new ArchiveItemViewModel() {
+                                                                    Year = x.Key.Year,
+                                                                    Mounth = x.Key.Mounth })
+                                );
         }
 
 
         [Authorize(Roles = "Admin")]
         public ActionResult Create(Guid? id)
         {
-            var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Details");
+            var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Create");
 
             // if Category Selected and We Have it
             if (id != null)
@@ -274,12 +277,16 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public void DeleteConfirmed(Guid id , string urlReferrer)
         {
             BlogPost blogPost = db.BlogPosts.Find(id);
             db.BlogPosts.Remove(blogPost);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            if (urlReferrer.Contains("/delete"))
+            {
+                Response.Redirect(Url.Action("ShowByCategory"));
+            }
+            Response.Redirect(urlReferrer);
         }
 
         protected override void Dispose(bool disposing)

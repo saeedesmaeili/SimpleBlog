@@ -7,7 +7,7 @@
 }
 
 <div class="uk-grid" data-uk-grid-margin="">
-    <div class="tm-sidebar uk-width-medium-1-4 uk-hidden-small">
+    <div class="tm-sidebar uk-width-large-1-4 uk-visible-large">
         <div class="uk-text-center">
             <a href="@Url.Action("Rss","Categories")" class="uk-icon-rss" style="font-size:90px;"></a>
         </div>
@@ -20,7 +20,7 @@
             @Html.Action("Menu", "Categories", new { SelectedCategoryId = ViewBag.CategoryId, SelectedCategoryParentId = ViewBag.CategoryParentId })
         </ul>
     </div>
-    <div class="tm-main uk-width-medium-3-4">
+    <div class="tm-main uk-width-large-3-4">
         @Html.MvcSiteMap().SiteMapPath()
         @if (User.IsInRole("Author") || User.IsInRole("Admin"))
         {
