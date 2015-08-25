@@ -11,7 +11,7 @@
         {
             <form id="deletePost" action="@Url.Action("Delete","BlogPosts")" method="post">
                 <input type="hidden" name="id" id="id" value="@Model.Id" />
-                @Html.Hidden("urlReferrer", Request.UrlReferrer == null ? Url.Action("ShowByCategory", "BlogPosts") : Request.UrlReferrer.ToString()) )
+                @Html.Hidden("urlReferrer", Request.UrlReferrer == null ? Url.Action("ShowByCategory", "BlogPosts") : Request.UrlReferrer.ToString())
                 @Html.AntiForgeryToken()
                 <p>
                     <a href="@Url.Action("Edit", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-success"> ویرایش </a>
@@ -30,12 +30,14 @@
                 <i class="uk-icon-calendar uk-margin-small-right uk-margin-left uk-icon-small"></i>@Html.DisplayFor(modelItem => Model.PublishDate)
                 <i class="@Model.Category.IconClass  uk-margin-small-right uk-margin-left uk-icon-small"></i><a href="@Url.Action("ShowByCategory","BlogPosts",new { id=Model.CategoryId })" class="uk-link-muted">@Model.Category.Name</a>
             </p>
-            <p>
-                <a href="#">
-                    <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"]+Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title" />
-                </a>
-            </p>
-
+            @if (Model.ShowPicture)
+            {
+                <p>
+                    <a href="#">
+                        <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"]+Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title" />
+                    </a>
+                </p>
+            }
             <div>
                 @Html.Raw(Model.Content)
             </div>

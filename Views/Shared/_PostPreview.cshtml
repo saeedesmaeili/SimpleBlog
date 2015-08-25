@@ -11,11 +11,14 @@
         <i class="uk-icon-calendar uk-margin-small-right uk-margin-left uk-icon-small"></i>@Html.DisplayFor(modelItem => Model.PublishDate)
         <i class="@Model.Category.IconClass  uk-margin-small-right uk-margin-left uk-icon-small"></i><a href="@Url.Action("ShowByCategory","BlogPosts",new { id=Model.CategoryId })" class="uk-link-muted">@Model.Category.Name</a>
     </p>
-    <p>
-        <a href=" @Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.Id })">
-            <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"]+Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title">
-        </a>
-    </p>
+    @if (Model.ShowPicture)
+    {
+        <p>
+            <a href=" @Url.Action("Details", "BlogPosts", new { id = Model.CategoryId, postId = Model.Id })">
+                <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"] + Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title">
+            </a>
+        </p>
+    }
     <h3 class="tm-article-subtitle">خطلاصه مطلب</h3>
     <p class="uk-text-justify">@Html.Raw(Model.Preview)</p>
     <p>

@@ -19,7 +19,7 @@ namespace Blog.Helpers
         /// </summary>
         /// <param name="feed">The feed to return the user.</param>
         public RssActionResult(SyndicationFeed feed)
-            : base("application/rss+xml")
+            : base("application/xml")
         {
             _feed = feed;
         }
@@ -30,16 +30,22 @@ namespace Blog.Helpers
         /// <param name="title">The title for the feed.</param>
         /// <param name="feedItems">The items of the feed.</param>
         public RssActionResult(string title, List<SyndicationItem> feedItems)
-            : base("application/rss+xml")
+            : base("application/xml")
         {
             _feed = new SyndicationFeed(title, title, HttpContext.Current.Request.Url) { Items = feedItems };
         }
-
+        //var formatter = new Rss20FeedFormatter(feed);
+        //    Atom10FeedFormatter formatter = new Atom10FeedFormatter(feed);
+        //using (var writer = XmlWriter.Create(response.Output, new XmlWriterSettings { Indent = true }))
+        //{
+        //    formatter.WriteTo(writer);
+        //}
         protected override void WriteFile(HttpResponseBase response)
         {
-            using (XmlWriter writer = XmlWriter.Create(response.OutputStream))
+            Atom10FeedFormatter formatter = new Atom10FeedFormatter(_feed);
+            using (XmlWriter writer = XmlWriter.Create(response.OutputStream, new XmlWriterSettings { Indent = true }))
             {
-                _feed.GetRss20Formatter().WriteTo(writer);
+                formatter.WriteTo(writer);
             }
         }
     }

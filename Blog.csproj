@@ -216,6 +216,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BlogPostsDynamicNodeProvider.cs" />
+    <Compile Include="Helpers\CDataSyndicationContent.cs" />
     <Compile Include="Helpers\PersianDateExtension.cs" />
     <Compile Include="Helpers\RssActionResult.cs" />
     <Compile Include="Helpers\SelectListItemInsertEmptyFirst.cs" />

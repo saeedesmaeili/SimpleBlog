@@ -23,6 +23,9 @@ namespace Blog.Models
         [Display(Name = "تصویر")]
         public string Picture { get; set; }
 
+        [Display(Name = "نمایش تصویر")]
+        public bool ShowPicture { get; set; }
+
 
         [Display(Name = "متن کامل")]
         [AllowHtml]
@@ -35,6 +38,7 @@ namespace Blog.Models
         public string Preview { get; set; }
 
         [Display(Name = "کلمات کلیدی")]
+        [DataType(DataType.MultilineText)]
         public string Keywords { get; set; }
 
         [Display(Name = "نویسنده")]

@@ -40,6 +40,16 @@
         </div>
 
         <div class="uk-form-row">
+            @Html.LabelFor(model => model.ShowPicture, htmlAttributes: new { @class = "uk-form-label" })
+            <div class="uk-form-controls">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.ShowPicture)
+                    @Html.ValidationMessageFor(model => model.ShowPicture, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-form-row">
             @Html.LabelFor(model => model.Picture, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
                 <input type="file" name="Picture" id="Picture" />
@@ -81,6 +91,7 @@
                 </div>
             </div>
         </div>
+            
 
         <div class="uk-form-row">
             @Html.LabelFor(model => model.PublishDate, htmlAttributes: new { @class = "uk-form-label" })

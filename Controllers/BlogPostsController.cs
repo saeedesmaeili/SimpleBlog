@@ -178,7 +178,8 @@ namespace Blog.Controllers
             }
             else
             {
-                blogPost.Picture = "empty.svg";
+                blogPost.Picture = WebConfigurationManager.AppSettings["NoPostPictureName"];
+                
             }
 
 
@@ -193,7 +194,7 @@ namespace Blog.Controllers
                 blogPost.Id = Guid.NewGuid();
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
-                return RedirectToAction("ShowByCategory", new { id = blogPost.CategoryId });
+                return RedirectToAction("Details", new { id = blogPost.CategoryId , postId = blogPost.Id });
             }
 
             ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", blogPost.CategoryId);
@@ -230,7 +231,7 @@ namespace Blog.Controllers
             if (Request.Files[0].ContentLength != 0)
             {
                 string pathToSave = Server.MapPath(WebConfigurationManager.AppSettings["ImagePostPath"]);
-                if (blogPost.Picture != "empty.svg")
+                if (blogPost.Picture != WebConfigurationManager.AppSettings["NoPostPictureName"])
                 {
                     System.IO.File.Delete(pathToSave + blogPost.Picture);
                 }
