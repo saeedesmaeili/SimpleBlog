@@ -76,6 +76,7 @@
             </ul>
             <div class="uk-panel">
                 <p dir="ltr" class="uk-text-muted uk-text-small">Made by <a href="http://www.SaeedEsmaeili.ir">Saeed Esmaeili</a> with love and caffeine.</p>
+                <p dir="ltr" style="font-family:Arial">@WebConfigurationManager.AppSettings["Copyright"]</p>
             </div>
         </div>
     </div>
@@ -94,9 +95,9 @@
 
             <ul class="uk-nav tm-offcanvas-nav uk-nav-parent-icon uk-nav-offcanvas" data-uk-nav="{}">
                 <li><a href="@Url.Action("Rss","Categories")"><i class="uk-icon-rss uk-margin-right"></i>مشترک خوراک وبلاک شوید</a></li>
-                <li class="uk-nav-header">شاخه های وبلاگ</li>
-                @Html.Action("Menu", "Categories", new { SelectedCategoryId = ViewBag.CategoryId, SelectedCategoryParentId = ViewBag.CategoryParentId })
                 <li class="uk-nav-header">منو اصلی</li>
+                @Html.Action("Menu", "Categories", new { SelectedCategoryId = ViewBag.CategoryId, SelectedCategoryParentId = ViewBag.CategoryParentId })
+
                 @Html.MvcSiteMap().Menu(false, new { name = "offcanvas" })
                 <li class="uk-nav-header">منو مدیریت</li>
                 <li><a href="@Url.Action("Index","Categories")">مدیریت شاخه ها</a></li>
@@ -121,6 +122,12 @@
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
+
+        // Wait for window load
+        $(window).load(function () {
+            // Animate loader off screen
+            $(".se-pre-con").fadeOut("slow");;
+        });
     </script>
 </body>
 </html>

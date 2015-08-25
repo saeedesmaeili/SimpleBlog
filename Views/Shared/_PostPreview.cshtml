@@ -18,8 +18,8 @@
                 <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"] + Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title">
             </a>
         </p>
+        <h3 class="tm-article-subtitle">خلاصه مطلب</h3>
     }
-    <h3 class="tm-article-subtitle">خطلاصه مطلب</h3>
     <p class="uk-text-justify">@Html.Raw(Model.Preview)</p>
     <p>
         <a class="uk-button uk-button-primary" href="@Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.Id })">ادامه مطلب</a>

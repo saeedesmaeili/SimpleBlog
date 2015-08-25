@@ -165,7 +165,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Content,Preview,Keywords,IsPublished,PublishDate,CategoryId")] BlogPost blogPost)
+        public ActionResult Create([Bind(Include = "Id,Title,Content,Preview,ShowPicture,Keywords,IsPublished,PublishDate,CategoryId")] BlogPost blogPost)
         {
 
 
@@ -225,7 +225,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Content,Picture,Preview,Keywords,Author,IsPublished,PublishDate,CreateDate,CategoryId")] BlogPost blogPost)
+        public ActionResult Edit([Bind(Include = "Id,Title,Content,Picture,Preview,Keywords,ShowPicture,Author,IsPublished,PublishDate,CreateDate,CategoryId")] BlogPost blogPost)
         {
 
             if (Request.Files[0].ContentLength != 0)

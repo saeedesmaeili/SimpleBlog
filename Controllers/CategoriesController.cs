@@ -41,7 +41,7 @@ namespace Blog.Controllers
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var posts = from p in db.BlogPosts select p;
-                string feedTitle = "وبلاگ سعید اسماعیلی";
+                string feedTitle = WebConfigurationManager.AppSettings["PageTitle"];
                 List<SyndicationItem> feedItems = new List<SyndicationItem>();
                 if (id != null)
                 {
@@ -50,14 +50,20 @@ namespace Blog.Controllers
                     feedTitle += "-" + category.Name;
                 }
 
-                foreach (BlogPost p in posts.OrderBy(p => p.PublishDate).Take(25).ToList())
+                foreach (BlogPost p in posts.Where(x=>x.IsPublished).OrderBy(p => p.PublishDate).Take(int.Parse(WebConfigurationManager.AppSettings["MaxRssPosts"])).ToList())
                 {
-                    if (true)
+                    string picture = "";
+                    picture = p.Picture + "?w=900&h=300&mode=crop";
+                    if (p.Picture == WebConfigurationManager.AppSettings["NoPostPictureName"])
                     {
-
+                        picture = p.Picture;
                     }
-                    string picture = p.Picture + "?w=900&h=300&mode=crop";
                     var Summary = "<div dir=\"rtl\" style=\"font-family:tahoma\"><img src=\"" + baseUrl + "Uploads/images_post/" + picture + "\" /><br/>" + p.Preview + "</div>";
+                    if (p.ShowPicture == false)
+                    {
+                        Summary = "<div dir=\"rtl\" style=\"font-family:tahoma\">" + p.Preview + "</div>";
+                    }
+
                     var item = new SyndicationItem();
                     item.AddPermalink(new Uri(new Uri(baseUrl), "BlogPosts/Details/" + p.CategoryId + "?postId=" + p.Id));
                     item.Id = p.Id.ToString();
@@ -65,17 +71,22 @@ namespace Blog.Controllers
                     item.Summary = new CDataSyndicationContent(new TextSyndicationContent(Summary, TextSyndicationContentKind.Html));
                     item.Categories.Add(new SyndicationCategory(p.Category.Name));
                     item.Authors.Add(new SyndicationPerson(p.Author.Email, p.Author.FirstName + " " + p.Author.LastName, ""));
-                    item.Copyright = new TextSyndicationContent("Copyright " + DateTime.Now.Year + " By <a href=\"Http://saeedEsmaeili.ir\">Saeed Esmaeili</a>", TextSyndicationContentKind.Html);
+                    item.Copyright = new TextSyndicationContent(WebConfigurationManager.AppSettings["Copyright"], TextSyndicationContentKind.Html);
                     item.PublishDate = p.PublishDate;
                     item.LastUpdatedTime = p.LastModifiedDate;
-                    var content = "<div dir=\"rtl\" style=\"font-family:tahoma\"><img src=\"" + baseUrl + "Uploads/images_post/" + picture +"\" /><br/>" + p.Content + "</div>";
+                    var content = "<div dir=\"rtl\" style=\"font-family:tahoma\"><img src=\"" + baseUrl + "Uploads/images_post/" + picture + "\" /><br/>" + p.Content + "</div>";
+                    if (p.ShowPicture == false)
+                    {
+                        content = "<div dir=\"rtl\" style=\"font-family:tahoma\">" + p.Content + "</div>";
+                    }
                     item.Content = new CDataSyndicationContent(new TextSyndicationContent(content, TextSyndicationContentKind.Html));
                     feedItems.Add(item);
                 }
-                SyndicationFeed feed = new SyndicationFeed(feedItems) {
-                                                                         Id = "0",
-                                                                         Title = new TextSyndicationContent(feedTitle, TextSyndicationContentKind.Plaintext),
-                                                                         ImageUrl = new Uri(new Uri(baseUrl ), "favicon-32x32.png")
+                SyndicationFeed feed = new SyndicationFeed(feedItems)
+                {
+                    Id = "0",
+                    Title = new TextSyndicationContent(feedTitle, TextSyndicationContentKind.Plaintext),
+                    ImageUrl = new Uri(new Uri(baseUrl), "favicon-32x32.png")
 
                 };
 
@@ -85,8 +96,8 @@ namespace Blog.Controllers
                 return new RssActionResult(feed);
             }
         }
-        
-                                 
+
+
 
 
         // GET: Categories1
