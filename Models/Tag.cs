@@ -13,6 +13,7 @@ namespace Blog.Models
         }
         public Guid Id { get; set; }
 
+        //[Ds]
         public string Title { get; set; }
 
         public virtual ICollection<BlogPost> BlogPosts { get; set; }
