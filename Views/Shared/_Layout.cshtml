@@ -127,8 +127,11 @@
         // Wait for window load
         $(window).load(function () {
             // Animate loader off screen
-            $(".tm-main-preloader").fadeOut("slow");;
+            $(".tm-main-preloader").fadeOut("slow");
+            $("img.lazy").lazyload();
         });
+
+
     </script>
 </body>
 </html>
