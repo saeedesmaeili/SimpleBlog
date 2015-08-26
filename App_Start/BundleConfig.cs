@@ -34,6 +34,7 @@ namespace Blog
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
                       "~/ckeditor/ckeditor.js",
+                      "~/ckeditor/config.js",
                       "~/Scripts/jquery-ui.js",
                       "~/Scripts/calendar.js",
                       "~/Scripts/jquery.ui.datepicker-cc-fa.js",
