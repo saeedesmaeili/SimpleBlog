@@ -32,7 +32,9 @@ namespace Blog
                 defaults: new { controller = "BlogPosts", action = "ShowByCategory", id = UrlParameter.Optional }
             );
 
-            
+
+            //Add the following line of code
+            routes.MapMvcAttributeRoutes();
 
         }
     }
