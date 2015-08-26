@@ -40,6 +40,49 @@ html {
 }
 
 
+
+.tm-social-icons {
+  margin: 30px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tm-social-icons > li {
+  display: inline-block;
+}
+.tm-social-icons > li > a {
+  display: inline-block;
+  border: 3px solid #2BA3D4;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  line-height: 85px;
+  margin: 15px 15px 0 15px;
+  padding: 20px;
+  font-size: 64px;
+  -webkit-transition: all 0.1s ease-in-out;
+  -webkit-transform: translate3d(0, 0, 0);
+  color: #2BA3D4;
+}
+.tm-social-icons > li > a:hover {
+  border-color: rgba(0, 0, 0, 0);
+  background-color: #2BA3D4;
+  color: #ffffff;
+  text-decoration: none;
+  -webkit-transform: scale(1.2);
+}
+/* Only phones */
+@media (max-width: 768px) {
+  .tm-social-icons > li > a {
+    width: 48px;
+    height: 48px;
+    line-height: 53px;
+    margin: 10px;
+    padding: 12px;
+    font-size: 43px;
+  }
+}
+
+
 /* Layout
  ========================================================================== */
 
