@@ -15,7 +15,7 @@
     {
         <p>
             <a href=" @Url.Action("Details", "BlogPosts", new { id = Model.CategoryId, postId = Model.Id })">
-                <img width="900" height="300" class="uk-responsive-width" src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"] + Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title">
+                <img width="900" height="300" class="uk-responsive-width lazy" data-original="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"] + Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title">
             </a>
         </p>
         <h3 class="tm-article-subtitle">خلاصه مطلب</h3>
