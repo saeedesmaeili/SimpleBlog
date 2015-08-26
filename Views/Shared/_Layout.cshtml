@@ -100,17 +100,17 @@
                 @Html.Action("Menu", "Categories", new { SelectedCategoryId = ViewBag.CategoryId, SelectedCategoryParentId = ViewBag.CategoryParentId })
 
                 @Html.MvcSiteMap().Menu(false, new { name = "offcanvas" })
-                <li class="uk-nav-header">منو مدیریت</li>
-                <li><a href="@Url.Action("Index","Categories")">مدیریت شاخه ها</a></li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="uk-nav-header">منو مدیریت</li>
+                    <li><a href="@Url.Action("Index","Categories")">مدیریت شاخه ها</a></li>
+                }
             </ul>
         </div>
     </div>
 
 
-    @if (User.IsInRole("Admin"))
-    {
-
-    }
+    
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -130,8 +130,6 @@
             $(".tm-main-preloader").fadeOut("slow");
             $("img.lazy").lazyload();
         });
-
-
     </script>
 </body>
 </html>
