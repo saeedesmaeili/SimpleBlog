@@ -32,9 +32,9 @@ namespace Blog.Models
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
 
+        [AllowHtml]
         [Display(Name = "پیش نمایش")]
         [DataType(DataType.MultilineText)]
-        [AllowHtml]
         public string Preview { get; set; }
 
         [Display(Name = "کلمات کلیدی")]
