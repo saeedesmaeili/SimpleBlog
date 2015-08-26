@@ -43,6 +43,7 @@
 </head>
 
 <body class="tm-background">
+    <div class="tm-main-preloader"></div>
     <nav class="tm-navbar uk-navbar " data-uk-sticky="{ media: '(min-width: 801px) '}">
         <div class="uk-container uk-container-center">
             <a class="uk-navbar-brand uk-visible-large" href="@Url.Action("Index","Home")">
@@ -126,7 +127,7 @@
         // Wait for window load
         $(window).load(function () {
             // Animate loader off screen
-            $(".se-pre-con").fadeOut("slow");;
+            $(".tm-main-preloader").fadeOut("slow");;
         });
     </script>
 </body>

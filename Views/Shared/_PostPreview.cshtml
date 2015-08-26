@@ -20,15 +20,17 @@
         </p>
         <h3 class="tm-article-subtitle">خلاصه مطلب</h3>
     }
-    <p class="uk-text-justify">@Html.Raw(Model.Preview)</p>
+    <div>
+        @Html.Raw(Model.Preview)
+    </div>
     <p>
         <a class="uk-button uk-button-primary" href="@Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.Id })">ادامه مطلب</a>
         @*<span class="disqus-comment-count" data-disqus-identifier="article_1_identifier">First article</span>*@
         <a class="uk-button" href="@Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.Id })#disqus_thread" data-disqus-identifier="@Model.Id"><i class="uk-icon-refresh uk-icon-spin"></i></a>
         @if (User.IsInRole("Author") || User.IsInRole("Admin"))
-        {
+            {
             <a href="@Url.Action("Edit", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-success"> ویرایش </a>
-            <a href="@Url.Action("Delete", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-danger"> حذف </a>
+                <a href="@Url.Action("Delete", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-danger"> حذف </a>
         }
     </p>
 </article>

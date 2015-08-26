@@ -58,18 +58,18 @@
         </div>
 
         <div class="uk-form-row">
-            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "uk-form-label" })
-            <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "uk-width-1-1 ckeditor" } })
-                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="uk-form-row">
             @Html.LabelFor(model => model.Preview, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
                 @Html.EditorFor(model => model.Preview, new { htmlAttributes = new { @class = "uk-width-1-1 ckeditor" } })
                 @Html.ValidationMessageFor(model => model.Preview, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="uk-form-row">
+            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "uk-form-label" })
+            <div class="uk-form-controls">
+                @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "uk-width-1-1 ckeditor" } })
+                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
             </div>
         </div>
 
