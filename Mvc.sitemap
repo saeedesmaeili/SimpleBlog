@@ -6,7 +6,7 @@
     <!--<mvcSiteMapNode title="درباره من" controller="Home" action="AboutMe"/>-->
     <mvcSiteMapNode title="وبلاگ" key="BlogPosts" controller="BlogPosts" action="ShowByCategory" visibility="!offcanvas">
       <mvcSiteMapNode title="a" controller="BlogPosts" action="ShowByCategory" key="BlogPosts_Category" preservedRouteParameters="id"   visibility="SiteMapPathHelper,!*"  >
-        <mvcSiteMapNode title="a" controller="BlogPosts" action="Details" key="BlogPosts_Details" preservedRouteParameters="id"   visibility="SiteMapPathHelper,!*"  />
+        <mvcSiteMapNode title="a" controller="BlogPosts" action="Details" key="BlogPosts_Details" preservedRouteParameters="id,postId"   visibility="SiteMapPathHelper,!*"  />
         <mvcSiteMapNode title="افزودن پست جدید" controller="BlogPosts" action="Create" key="BlogPosts_Create"  preservedRouteParameters="id"   visibility="SiteMapPathHelper,!*"  />
       </mvcSiteMapNode>
       <mvcSiteMapNode title="آرشیو" action="ShowArchive" controller="BlogPosts" key="BlogPosts_ShowArchive"  visibility="SiteMapPathHelper,!*" />
