@@ -1,7 +1,7 @@
 ﻿@using Blog.Models
 @model IEnumerable<Category>
 @{
-    var firstLevel = Model.Where(x => x.ParentId == Guid.Empty).ToList();
+    var firstLevel = Model.Where(x => x.ParentId == 0).ToList();
 }
 
 @helper RecurseSomething(Category item)
@@ -9,7 +9,7 @@
     if (Model.Any(x => x.ParentId == item.Id))
     {
         <li class="uk-parent @(ViewBag.SelectedCategoryParentId == item.Id || Model.Where(x=>x.ParentId == item.Id).Any(x => x.Id == ViewBag.SelectedCategoryParentId) ? "uk-active" : "") ">
-            @if (item.ParentId == Guid.Empty)
+            @if (item.ParentId == 0)
             {
                 <a href="#"><i class="@item.IconClass uk-margin-small-right"></i>@item.Name</a>
             }

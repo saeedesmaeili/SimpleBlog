@@ -40,6 +40,40 @@
         </div>
 
         <div class="uk-form-row">
+            @Html.LabelFor(model => model.MetaDescription, htmlAttributes: new { @class = "uk-form-label" })
+            <div class="uk-form-controls">
+                @Html.EditorFor(model => model.MetaDescription, new { htmlAttributes = new { @class = "uk-width-1-1", placeholder = "متنی برای تمایش در نتایج جستجوی Google" } })
+                @Html.ValidationMessageFor(model => model.MetaDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="uk-form-row">
+            @Html.LabelFor(model => model.Keywords, htmlAttributes: new { @class = "uk-form-label" })
+            <div class="uk-form-controls">
+                @Html.EditorFor(model => model.Keywords, new { htmlAttributes = new { @class = "uk-width-1-1" } })
+                @Html.ValidationMessageFor(model => model.Keywords, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="uk-form-row">
+            @Html.LabelFor(model => model.IsPublished, htmlAttributes: new { @class = "uk-form-label" })
+            <div class="uk-form-controls">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsPublished)
+                    @Html.ValidationMessageFor(model => model.IsPublished, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+        <div class="uk-form-row">
+            @Html.LabelFor(model => model.PublishDate, htmlAttributes: new { @class = "uk-form-label" })
+            <div class="uk-form-controls">
+                @Html.EditorFor(model => model.PublishDate, new { htmlAttributes = new { @class = "" } })
+                @Html.ValidationMessageFor(model => model.PublishDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="uk-form-row">
             @Html.LabelFor(model => model.ShowPicture, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
                 <div class="checkbox">
@@ -73,33 +107,7 @@
             </div>
         </div>
 
-        <div class="uk-form-row">
-            @Html.LabelFor(model => model.Keywords, htmlAttributes: new { @class = "uk-form-label" })
-            <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Keywords, new { htmlAttributes = new { @class = "uk-width-1-1" } })
-                @Html.ValidationMessageFor(model => model.Keywords, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-
-        <div class="uk-form-row">
-            @Html.LabelFor(model => model.IsPublished, htmlAttributes: new { @class = "uk-form-label" })
-            <div class="uk-form-controls">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsPublished)
-                    @Html.ValidationMessageFor(model => model.IsPublished, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-            
-
-        <div class="uk-form-row">
-            @Html.LabelFor(model => model.PublishDate, htmlAttributes: new { @class = "uk-form-label" })
-            <div class="uk-form-controls">
-                @Html.EditorFor(model => model.PublishDate, new { htmlAttributes = new { @class = "" } })
-                @Html.ValidationMessageFor(model => model.PublishDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
                 
         <div class="uk-form-row">
             <div class="col-md-offset-2 uk-form-controls">

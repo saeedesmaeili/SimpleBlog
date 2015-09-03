@@ -8,11 +8,8 @@ namespace Blog.Models
 {
     public class Category
     {
-        public Category()
-        {
-            this.Id = Guid.NewGuid();
-        }
-        public Guid Id { get; set; }
+
+        public int Id { get; set; }
 
         [Required]
         [Display(Name = "نام شاخه")]
@@ -26,9 +23,8 @@ namespace Blog.Models
         [Display(Name = "اولویت چیدمان")]
         public int Order { get; set; }
 
-        [Required]
         [Display(Name = "شاخه پدر")]
-        public Guid ParentId { get; set; }
+        public int ParentId { get; set; }
 
         public virtual ICollection<BlogPost> BlogPosts { get; set; }
 

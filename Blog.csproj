@@ -77,8 +77,8 @@
       <HintPath>..\packages\MvcSiteMapProvider.MVC5.4.6.18\lib\net45\MvcSiteMapProvider.WebActivator.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RazorGenerator.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
@@ -220,6 +220,7 @@
     <Compile Include="Helpers\PersianDateExtension.cs" />
     <Compile Include="Helpers\RssActionResult.cs" />
     <Compile Include="Helpers\SelectListItemInsertEmptyFirst.cs" />
+    <Compile Include="Helpers\BlogPostSeoFriendlyRoute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ArchiveItemViewModel.cs" />
     <Compile Include="Models\BlogPost.cs" />
@@ -377,6 +378,33 @@
     <Content Include="Content\components\upload.gradient.min.css" />
     <Content Include="Content\components\upload.min.css" />
     <Content Include="Content\cropped-Website-Design-Background11.png" />
+    <Content Include="Content\images\calendar.png" />
+    <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\images\ui-bg_highlight-hard_20_0972a5_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_33_003147_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_35_222222_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_44_444444_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="Content\images\ui-bg_loop_25_000000_21x21.png" />
+    <Content Include="Content\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\images\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="Content\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\images\ui-icons_a83300_256x240.png" />
+    <Content Include="Content\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\jquery-ui-1.11.3.css" />
     <Content Include="Content\uikit.almost-flat.rtl.css" />
     <Content Include="Content\uikit.almost-flat.css" />
@@ -400,6 +428,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\empty.svg" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\me.jpg" />
     <Content Include="Images\preloader.gif" />
@@ -443,6 +472,7 @@
     <Content Include="ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
     <Content Include="ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="ckeditor\skins\moono\readme.md" />
+    <None Include="Properties\PublishProfiles\SimpleBlog.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="ckeditor\adapters\jquery.js" />
     <Content Include="ckeditor\build-config.js" />
@@ -836,6 +866,7 @@
     <Content Include="Scripts\jquery-scrollspeed.js" />
     <Content Include="Scripts\jquery-scrollspeed.min.js" />
     <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.lazy.js" />
     <Content Include="Scripts\jquery.lazyload.js" />
     <Content Include="Scripts\jquery.lazyload.min.js" />
     <Content Include="Scripts\jquery.ui.datepicker-cc-fa.js" />
@@ -921,6 +952,7 @@
     <Content Include="Scripts\uikit.js" />
     <Content Include="Scripts\uikit.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Uploads\images_post\empty.svg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1008,11 +1040,12 @@
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Shared\_PostPreview.cshtml" />
     <Content Include="Views\BlogPosts\Delete.cshtml" />
+    <Content Include="Views\BlogPosts\ShowArchive.cshtml" />
+    <Content Include="Views\BlogPosts\ArchiveList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Uploads\file\" />
-    <Folder Include="Uploads\images_post\" />
     <Folder Include="Uploads\image\" />
   </ItemGroup>
   <ItemGroup>

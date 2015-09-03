@@ -21,9 +21,10 @@ namespace Blog.Helpers
                     //dynamicNode.ParentKey = "Category_" + post.Category.Name;
                     dynamicNode.Action = "Details";
                     dynamicNode.Controller = "BlogPosts";
-                    dynamicNode.RouteValues.Add("id", post.Id);
-                    dynamicNode.RouteValues.Add("CategoryName", post.Category.Name.Replace(" ", "-"));
-                    dynamicNode.RouteValues.Add("Title", post.Title.Replace(" ","-"));
+                    dynamicNode.RouteValues.Add("id", post.CategoryId);
+                    dynamicNode.RouteValues.Add("postId", post.GenerateSlug());
+                    //dynamicNode.RouteValues.Add("CategoryName", post.Category.Name.Replace(" ", "-"));
+                    //dynamicNode.RouteValues.Add("Title", post.Title.Replace(" ","-"));
                     dynamicNode.LastModifiedDate = post.LastModifiedDate;
                     dynamicNode.Description = post.Title;
                     dynamicNode.ChangeFrequency = ChangeFrequency.Weekly;

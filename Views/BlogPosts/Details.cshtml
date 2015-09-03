@@ -2,8 +2,8 @@
 @using System.Web.Configuration
 @{
     ViewBag.Title = Model.Title;
+    ViewBag.MetaDescription = Model.MetaDescription;
 }
-
 <div class="uk-grid" data-uk-grid-margin="">
     <div class="uk-width-large-3-4">
         @Html.MvcSiteMap().SiteMapPath()

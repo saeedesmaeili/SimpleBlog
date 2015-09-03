@@ -8,11 +8,8 @@ namespace Blog.Models
 {
     public class Tag
     {
-        public Tag()
-        {
-            this.Id = Guid.NewGuid();
-        }
-        public Guid Id { get; set; }
+        
+        public int Id { get; set; }
 
         [Required , Display(Name ="عنوان")]
         public string Title { get; set; }

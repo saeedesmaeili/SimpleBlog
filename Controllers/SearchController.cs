@@ -15,7 +15,7 @@ namespace Blog.Controllers
         // GET: Search
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Index(string query, Guid? id, int? page)
+        public ActionResult Index(string query, int? id, int? page)
         {
             int BlogPostsPageSize = int.Parse(ConfigurationManager.AppSettings["BlogPostsPageSize"]);
             ViewBag.SearchTerm = query;

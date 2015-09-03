@@ -22,6 +22,7 @@ namespace Blog
             bundles.Add(new ScriptBundle("~/bundles/uikit").Include(
                       "~/Scripts/uikit.js",
                       "~/Scripts/components/sticky.js",
+                       "~/Scripts/components/grid.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shCore.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushCSharp.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js",
@@ -29,7 +30,7 @@ namespace Blog
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushXml.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushPowerShell.js",
                       "~/Scripts/syntaxhighlighter_3.0.83/scripts/shBrushCss.js",
-                      "~/Scripts/jquery.lazyload.js"
+                      "~/Scripts/jquery.lazy.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(

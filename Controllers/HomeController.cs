@@ -42,10 +42,10 @@ namespace Blog.Controllers
             if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
             {
 
-                var body = "<div dir=\"rtl\"><p >ایمیل از: {0} ({1})</p><p>پیام:</p><p>{2}</p></div>";
+                var body = "<table width=\"100%\" dir=\"rtl\" cellpadding=\"10\"><tr><td><h1>{0}</h1><br/><h2>{1}</h2></td></tr><tr><td><p>{2}</p></td></tr></table>";
                 var message = new MailMessage();
-                message.To.Add(new MailAddress("smaeily@gmail.com")); //replace with valid value
-                message.Subject = "وبلاگ سعید اسماعیلی";
+                message.To.Add(new MailAddress(ConfigurationManager.AppSettings["ContactMeMailReciver"])); //replace with valid value
+                message.Subject = String.Format(ConfigurationManager.AppSettings["ContactMeMailSubject"] , model.FromName );
                 message.Body = string.Format(body, model.FromName, model.FromEmail, model.Message);
                 message.IsBodyHtml = true;
                 using (var smtp = new SmtpClient())

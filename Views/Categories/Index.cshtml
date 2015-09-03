@@ -1,7 +1,7 @@
 ﻿@using Blog.Models
 @model IEnumerable<Category>
 @{
-    var firstLevel = Model.Where(x => x.ParentId == Guid.Empty).ToList();
+    var firstLevel = Model.Where(x => x.ParentId == 0).ToList();
 }
 
 <h1>

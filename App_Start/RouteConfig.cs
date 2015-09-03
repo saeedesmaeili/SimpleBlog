@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,11 +27,22 @@ namespace Blog
             );
 
 
+            //routes.MapRoute(
+            //    name: "PostDetails",
+            //    url: "BlogPosts/Details/{id}/{postId}",
+            //    defaults: new { controller = "BlogPosts", action = "Details", id = UrlParameter.Optional , postId = UrlParameter.Optional }
+            //);
+
+            routes.Add("PostDetails", new BlogPostSeoFriendlyRoute("BlogPosts/Details/{id}/{postId}",
+           new RouteValueDictionary(new { controller = "BlogPosts", action = "Details", id = UrlParameter.Optional, postId = UrlParameter.Optional }),
+           new MvcRouteHandler()));
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "BlogPosts", action = "ShowByCategory", id = UrlParameter.Optional }
             );
+
 
 
             //Add the following line of code

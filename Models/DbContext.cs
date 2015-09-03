@@ -67,8 +67,8 @@ namespace Blog.Models
 
             ApplicationDbContext db = new ApplicationDbContext();
 
-            db.Categories.Add(new Category() { Name = "شخصی", ParentId = Guid.Empty });
-            db.Categories.Add(new Category() { Name = "Sql Server", ParentId = Guid.Empty });
+            db.Categories.Add(new Category() { Name = "شخصی", ParentId = 0 });
+            db.Categories.Add(new Category() { Name = "Sql Server", ParentId = 0 });
 
 
             IList<IdentityRole> defaultRoles = new List<IdentityRole>();

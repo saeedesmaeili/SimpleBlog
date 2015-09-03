@@ -27,7 +27,7 @@ namespace Blog.Controllers
         // GET: BlogPosts
 
         [SiteMapTitle("Title")]
-        public ActionResult Details(Guid? id , Guid? postId)
+        public ActionResult Details(int? id, int? postId)
         {
             BlogPost blogPost = db.BlogPosts.Find(postId);
 
@@ -50,7 +50,7 @@ namespace Blog.Controllers
             return View(blogPost);
         }
 
-        public ActionResult ShowByCategory(Guid? id, int? page)
+        public ActionResult ShowByCategory(int? id, int? page)
         {
             int BlogPostsPageSize = int.Parse(ConfigurationManager.AppSettings["BlogPostsPageSize"]);
             var category = db.Categories.Find(id);
@@ -67,7 +67,6 @@ namespace Blog.Controllers
                 {
                     node.Title = category.Name;
                 }
-
             }
 
             if (!(User.IsInRole("Admin") || User.IsInRole("Author")))
@@ -77,10 +76,33 @@ namespace Blog.Controllers
             posts = posts
                         .Include("Author")
                         .OrderByDescending(x => x.PublishDate);
-            return View("Index", posts.ToPagedList((page ?? 1) , BlogPostsPageSize));
+            return View("Index", posts.ToPagedList((page ?? 1), BlogPostsPageSize));
         }
 
-        public ActionResult ShowArchive(int year, int mounth , int? page)
+        public ActionResult ArchiveList()
+        {
+            var blogPosts = from a in db.BlogPosts select a;
+            if (!User.IsInRole("Admin") && !User.IsInRole("Author"))
+            {
+                blogPosts = blogPosts.Where(x => x.IsPublished);
+            }
+            return View(blogPosts
+                            .GroupBy(x => new
+                            {
+                                Year = x.PublishShamsiYear,
+                                Mounth = x.PublishShamsiMounth
+                            })
+                            .OrderByDescending(o => o.Key.Year)
+                            .ThenByDescending(n => n.Key.Mounth)
+                            .Select(x => new ArchiveItemViewModel()
+                            {
+                                Year = x.Key.Year,
+                                Mounth = x.Key.Mounth,
+                                Count = x.Count()
+                            }));
+        }
+
+        public ActionResult ShowArchive(int year, int mounth, int? page)
         {
 
             int BlogPostsPageSize = int.Parse(ConfigurationManager.AppSettings["BlogPostsPageSize"]);
@@ -90,7 +112,7 @@ namespace Blog.Controllers
             var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_ShowArchive");
             if (node != null)
             {
-                node.Title = "آرشیو " + mounth.GetPersianMounthName() + " ماه " + year;
+                node.Title = mounth.GetPersianMounthName() + " ماه " + year;
             }
 
             // Show UnPublished Post if user is in Role admin or Author 
@@ -102,40 +124,52 @@ namespace Blog.Controllers
             {
                 posts = posts.Where(x => x.PublishShamsiYear == year && x.PublishShamsiMounth == mounth && x.IsPublished);
             }
-
-            return View("Index", posts
+            ViewBag.Mounth = mounth;
+            ViewBag.Year = year;
+            return View("ShowArchive", posts
                                 .OrderByDescending(x => x.PublishDate)
                                 .Include("Author")
                                 .ToPagedList((page ?? 1), BlogPostsPageSize)
                         );
         }
 
-        public ActionResult Archive()
+        //[OutputCache(Duration = 3600)]
+        public ActionResult Archive(int? year , int? mounth)
         {
-            return PartialView("_Archive", db.BlogPosts
+            var blogPosts = from a in db.BlogPosts select a;
+            if (!User.IsInRole("Admin") && !User.IsInRole("Author"))
+            {
+                blogPosts = blogPosts.Where(x => x.IsPublished);
+            }
+            ViewBag.Mounth = mounth;
+            ViewBag.Year = year;
+            return PartialView("_Archive", blogPosts
                                             .GroupBy(x => new
                                             {
                                                 Year = x.PublishShamsiYear,
                                                 Mounth = x.PublishShamsiMounth
                                             })
                                             .OrderByDescending(o => o.Key.Year)
-                                            .ThenBy(n => n.Key.Mounth)
-                                            .Select(x => new ArchiveItemViewModel() {
-                                                                    Year = x.Key.Year,
-                                                                    Mounth = x.Key.Mounth })
+                                            .ThenByDescending(n => n.Key.Mounth)
+                                            .Select(x => new ArchiveItemViewModel()
+                                            {
+                                                Year = x.Key.Year,
+                                                Mounth = x.Key.Mounth,
+                                                Count = x.Count()
+                                            })
                                 );
         }
 
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Create(Guid? id)
+        public ActionResult Create(int? id)
         {
             var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_Create");
 
             // if Category Selected and We Have it
             if (id != null)
             {
-                ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", id);
+                ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != 0), "Id", "Name", id);
                 // SiteMap and Breadcrumb
                 Category category = db.Categories.Find(id);
                 if (node.ParentNode != null)
@@ -146,7 +180,7 @@ namespace Blog.Controllers
             }
             else
             {
-                ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name");
+                ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != 0), "Id", "Name");
                 if (node.ParentNode != null)
                 {
                     node.ParentNode.Title = "شاخه نامشخص";
@@ -165,7 +199,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Content,Preview,ShowPicture,Keywords,IsPublished,PublishDate,CategoryId")] BlogPost blogPost)
+        public ActionResult Create([Bind(Include = "Id,Title,Content,Preview,ShowPicture,Keywords,MetaDescription,IsPublished,PublishDate,CategoryId")] BlogPost blogPost)
         {
 
 
@@ -179,7 +213,7 @@ namespace Blog.Controllers
             else
             {
                 blogPost.Picture = WebConfigurationManager.AppSettings["NoPostPictureName"];
-                
+
             }
 
 
@@ -191,20 +225,20 @@ namespace Blog.Controllers
             blogPost.LastModifiedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                blogPost.Id = Guid.NewGuid();
+
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
-                return RedirectToAction("Details", new { id = blogPost.CategoryId , postId = blogPost.Id });
+                return RedirectToAction("Details", new { id = blogPost.CategoryId, postId = blogPost.Id });
             }
 
-            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", blogPost.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != 0), "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 
 
         [Authorize(Roles = "Admin")]
         // GET: BlogPosts/Edit/5
-        public ActionResult Edit(Guid? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -215,7 +249,7 @@ namespace Blog.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", blogPost.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != 0), "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 
@@ -225,7 +259,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Content,Picture,Preview,Keywords,ShowPicture,Author,IsPublished,PublishDate,CreateDate,CategoryId")] BlogPost blogPost)
+        public ActionResult Edit([Bind(Include = "Id,Title,Content,Picture,Preview,Keywords,MetaDescription,ShowPicture,Author,IsPublished,PublishDate,CreateDate,CategoryId")] BlogPost blogPost)
         {
 
             if (Request.Files[0].ContentLength != 0)
@@ -251,16 +285,16 @@ namespace Blog.Controllers
             {
                 db.Entry(blogPost).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("ShowByCategory", new { id = blogPost.CategoryId });
+                return RedirectToAction("Details", new { id = blogPost.CategoryId , postId = blogPost.Id });
             }
-            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != Guid.Empty), "Id", "Name", blogPost.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Categories.Where(x => x.ParentId != 0), "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 
 
         // GET: BlogPosts1/Delete/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Delete(Guid? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -278,7 +312,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public void DeleteConfirmed(Guid id , string urlReferrer)
+        public void DeleteConfirmed(int id, string urlReferrer)
         {
             BlogPost blogPost = db.BlogPosts.Find(id);
             db.BlogPosts.Remove(blogPost);

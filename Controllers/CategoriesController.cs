@@ -6,10 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.ServiceModel.Syndication;
-using System.Web;
 using System.Web.Mvc;
-using Blog.Helpers;
-using System.Xml.Linq;
 using System.Web.Configuration;
 
 namespace Blog.Controllers
@@ -22,7 +19,7 @@ namespace Blog.Controllers
 
 
         // GET: Categories
-        public ActionResult Menu(Guid? SelectedCategoryId, Guid? SelectedCategoryParentId)
+        public ActionResult Menu(int? SelectedCategoryId, int? SelectedCategoryParentId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
@@ -34,7 +31,7 @@ namespace Blog.Controllers
             }
         }
         //[OutputCache(Duration = 43200)]
-        public ActionResult Rss(Guid? id)
+        public ActionResult Rss(int? id)
         {
             string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
 
@@ -65,7 +62,7 @@ namespace Blog.Controllers
                     }
 
                     var item = new SyndicationItem();
-                    item.AddPermalink(new Uri(new Uri(baseUrl), "BlogPosts/Details/" + p.CategoryId + "?postId=" + p.Id));
+                    item.AddPermalink(new Uri(new Uri (baseUrl), "BlogPosts/Details/" + p.CategoryId + "/" + p.GenerateSlug(),true));
                     item.Id = p.Id.ToString();
                     item.Title = new TextSyndicationContent(p.Title, TextSyndicationContentKind.Html);
                     item.Summary = new CDataSyndicationContent(new TextSyndicationContent(Summary, TextSyndicationContentKind.Html));
@@ -115,7 +112,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            ViewBag.ParentId = new SelectList(db.Categories, "Id", "Name").InsertEmptyFirst("شاخه اصلی", Guid.Empty.ToString());
+            ViewBag.ParentId = new SelectList(db.Categories, "Id", "Name").InsertEmptyFirst("شاخه اصلی", "0");
             Category category = new Category();
             category.IconClass = "uk-icon-caret-right";
             return View(category);
@@ -129,27 +126,22 @@ namespace Blog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,IconClass,Order,ParentId")] Category category)
         {
-            if (category.ParentId == null)
-            {
-                category.ParentId = Guid.Empty;
-            }
-
+            
             if (ModelState.IsValid)
             {
-                category.Id = Guid.NewGuid();
                 db.Categories.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParentId = new SelectList(db.Categories, "Id", "Name", category.ParentId).InsertEmptyFirst("شاخه اصلی", Guid.Empty.ToString());
+            ViewBag.ParentId = new SelectList(db.Categories, "Id", "Name", category.ParentId).InsertEmptyFirst("شاخه اصلی", "0");
 
             return View(category);
         }
 
         // GET: Categories1/Edit/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit(Guid? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -161,7 +153,7 @@ namespace Blog.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.ParentId = new SelectList(db.Categories.Where(x => x.Id != category.Id), "Id", "Name", category.ParentId).InsertEmptyFirst("شاخه اصلی", Guid.Empty.ToString());
+            ViewBag.ParentId = new SelectList(db.Categories.Where(x => x.Id != category.Id), "Id", "Name", category.ParentId).InsertEmptyFirst("شاخه اصلی", "0");
 
             return View(category);
         }
@@ -175,24 +167,19 @@ namespace Blog.Controllers
         public ActionResult Edit([Bind(Include = "Id,Name,IconClass,Order,ParentId")] Category category)
         {
 
-            if (category.ParentId == null)
-            {
-                category.ParentId = Guid.Empty;
-            }
             if (ModelState.IsValid)
             {
                 db.Entry(category).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ParentId = new SelectList(db.Categories.Where(x => x.Id != category.Id), "Id", "Name", category.ParentId).InsertEmptyFirst("شاخه اصلی", Guid.Empty.ToString());
+            ViewBag.ParentId = new SelectList(db.Categories.Where(x => x.Id != category.Id), "Id", "Name", category.ParentId).InsertEmptyFirst("شاخه اصلی", "0");
             return View(category);
         }
 
         // GET: Categories1/Delete/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Delete(Guid? id, string message)
+        public ActionResult Delete(int? id, string message)
         {
             if (id == null)
             {
@@ -217,7 +204,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public ActionResult DeleteConfirmed(int id)
         {
             Category category = db.Categories.Find(id);
             if (db.Categories.Where(x => x.ParentId == id).Count() > 0 || db.BlogPosts.Where(x => x.CategoryId == id).Count() > 0)

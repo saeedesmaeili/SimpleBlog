@@ -3,9 +3,9 @@
 
 <article class="uk-article uk-margin-large-bottom @Html.Raw(!Model.IsPublished ? "uk-block-secondary uk-contrast\" style=\"padding:30px;" : "")">
 
-    <h3 class="uk-article-title" style="font-size:26px">
-        <a href=" @Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.Id })">@Model.Title</a>
-    </h3>
+    <h2 class="uk-article-title" style="font-size:26px">
+        <a href=" @Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.GenerateSlug() })">@Model.Title</a>
+    </h2>
     <p class="uk-article-meta ">
         <i class="uk-icon-user  uk-margin-small-right uk-icon-small"></i>@Model.Author.FirstName @Model.Author.LastName
         <i class="uk-icon-calendar uk-margin-small-right uk-margin-left uk-icon-small"></i>@Html.DisplayFor(modelItem => Model.PublishDate)
@@ -15,7 +15,7 @@
     {
         <p>
             <a href=" @Url.Action("Details", "BlogPosts", new { id = Model.CategoryId, postId = Model.Id })">
-                <img width="900" height="300" class="uk-responsive-width lazy" data-original="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"] + Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title">
+                <img width="900" height="300" class="uk-responsive-width lazy" data-src="@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"] + Model.Picture))?w=900&amp;h=300&amp;mode=crop" alt="@Model.Title">
             </a>
         </p>
         <h3 class="tm-article-subtitle">خلاصه مطلب</h3>
@@ -24,9 +24,9 @@
         @Html.Raw(Model.Preview)
     </div>
     <p>
-        <a class="uk-button uk-button-primary" href="@Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.Id })">ادامه مطلب</a>
+        <a class="uk-button uk-button-primary" href="@Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.GenerateSlug() })">ادامه مطلب</a>
         @*<span class="disqus-comment-count" data-disqus-identifier="article_1_identifier">First article</span>*@
-        <a class="uk-button" href="@Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.Id })#disqus_thread" data-disqus-identifier="@Model.Id"><i class="uk-icon-refresh uk-icon-spin"></i></a>
+        <a class="uk-button" href="@Url.Action("Details","BlogPosts",new { id = Model.CategoryId , postId = Model.GenerateSlug() })#disqus_thread" data-disqus-identifier="@Model.Id"><i class="uk-icon-refresh uk-icon-spin"></i></a>
         @if (User.IsInRole("Author") || User.IsInRole("Admin"))
             {
             <a href="@Url.Action("Edit", "BlogPosts", new { id = Model.Id })" class="uk-button uk-button-success"> ویرایش </a>

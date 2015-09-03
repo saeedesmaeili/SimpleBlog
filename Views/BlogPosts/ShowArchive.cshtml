@@ -17,8 +17,8 @@
             {
                 <a href="@Url.Action("Index","Categories")" class="uk-button uk-button-primary uk-margin-bottom uk-width-1-1 uk-text-left"><i class="uk-icon-cogs uk-margin-small-right"></i>مدیریت شاخه ها</a>
             }
-            <ul class="tm-nav tm-category-nav uk-nav uk-nav-parent-icon uk-nav-side" data-uk-nav="{}">
-                @Html.Action("Menu", "Categories", new { SelectedCategoryId = ViewBag.CategoryId, SelectedCategoryParentId = ViewBag.CategoryParentId })
+            <ul class="uk-nav uk-nav-side">
+                @Html.Action("Archive", "BlogPosts", new { year = ViewBag.Year , mounth = ViewBag.Mounth })
             </ul>
         </div>
     </div>
@@ -37,22 +37,22 @@
 
         <div class="uk-visible-small">
             @Html.PagedListPager(Model, page => Url.Action("ShowByCategory", "BlogPosts", new { id = ViewBag.CategoryId, page }), new PagedListRenderOptions()
-           {
-               UlElementClasses = new List<string>() { "uk-pagination" },
-               LiElementClasses = new List<string>() { "" },
-               MaximumPageNumbersToDisplay = 5,
-               DisplayLinkToNextPage = PagedListDisplayMode.Never,
-               DisplayLinkToPreviousPage = PagedListDisplayMode.Never
-           })
+       {
+           UlElementClasses = new List<string>() { "uk-pagination" },
+           LiElementClasses = new List<string>() { "" },
+           MaximumPageNumbersToDisplay = 5,
+           DisplayLinkToNextPage = PagedListDisplayMode.Never,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.Never
+       })
         </div>
         <div class="uk-hidden-small">
             @Html.PagedListPager(Model, page => Url.Action("ShowByCategory", "BlogPosts", new { id = ViewBag.CategoryId, page }), new PagedListRenderOptions()
-           {
-               UlElementClasses = new List<string>() { "uk-pagination" },
-               LiElementClasses = new List<string>() { "" },
-               MaximumPageNumbersToDisplay = 10
+       {
+           UlElementClasses = new List<string>() { "uk-pagination" },
+           LiElementClasses = new List<string>() { "" },
+           MaximumPageNumbersToDisplay = 10
 
-           })
+       })
         </div>
     </div>
 </div>

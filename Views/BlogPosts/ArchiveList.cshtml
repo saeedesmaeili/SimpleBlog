@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "آرشیو مطالب";
+}
+
+@model IEnumerable<Blog.Models.ArchiveItemViewModel>
+@using Blog.Helpers
+
+<h1>آرشیو مطالب</h1>
+<div >
+    <div class="uk-grid-width-1-2 uk-grid-width-small-1-3 uk-grid-width-medium-1-4 uk-grid-width-large-1-5" data-uk-grid="">
+        @foreach (Blog.Models.ArchiveItemViewModel item in Model)
+        {
+            @*<a class="uk-panel uk-panel-hover uk-panel-box-hover   ></a>*@
+            <a class="uk-panel uk-panel-box" style="border:1px solid #fff" href="@Url.Action("ShowArchive", "BlogPosts",new { year = item.Year, mounth = item.Mounth })">
+                <div class="uk-panel-teaser" >
+                    @switch (item.Mounth)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                            <img src="@Url.Content("~/images/seasons/spring.jpg")" alt="" />
+                            break;
+                        case 4:
+                        case 5:
+                        case 6:
+                            <img src="@Url.Content("~/images/seasons/summer.jpg")" alt="" />
+                            break;
+                        case 7:
+                        case 8:
+                        case 9:
+                            <img src="@Url.Content("~/images/seasons/autumn.jpg")" alt="" />
+                            break;
+                        case 10:
+                        case 11:
+                        case 12:
+                            <img src="@Url.Content("~/images/seasons/winter.jpg")" alt="" />
+                            break;
+                    }
+                </div>
+                <p class="uk-text-center">@item.Year @item.Mounth.GetPersianMounthName() <span class="uk-margin-left uk-badge uk-badge-notification uk-badge-warning">@item.Count</span></p>
+            </a>
+        }
+
+    </div>
+</div>
