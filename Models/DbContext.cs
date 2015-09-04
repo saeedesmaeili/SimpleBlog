@@ -13,6 +13,7 @@ namespace Blog.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string TwitterId { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -83,6 +84,7 @@ namespace Blog.Models
                 FirstName ="سعید"   ,
                 LastName = "اسماعیلی" ,
                 Email = "smaeily@gmail.com" ,
+                TwitterId = "@smaeily",
                 PhoneNumber ="+989125237880"
             };
 

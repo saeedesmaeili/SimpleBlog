@@ -1,67 +1,84 @@
 ﻿@model Blog.Models.EmailFormViewModel
+@using System.Configuration
 @{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "تماس با من";
 }
 @Html.MvcSiteMap().SiteMapPath()
 <div class="uk-grid" data-uk-grid-margin="">
     <div class="uk-width-1-1 ">
-            <ul class="tm-social-icons uk-text-center">
-                <li  class=""><a href="http://github.com/saeedesmaeili" target="_blank"><span class="uk-icon-github" ></span></a></li>
-                <li  class=""><a href="http://twitter.com/smaeily" target="_blank"><span class="uk-icon-twitter" ></span></a></li>
-                <li  class=""><a href="http://www.facebook.com/Saeed.Esmaeili" target="_blank"><span class="uk-icon-facebook-official" ></span></a></li>
-                <li  class=""><a href="https://ir.linkedin.com/pub/saeed-esmaeili/89/81a/1a3" target="_blank"><span class="uk-icon-linkedin-square" ></span></a></li>
-            </ul>
+        <ul class="tm-social-icons uk-text-center">
+
+            <li class=""><a href="@ConfigurationManager.AppSettings["ContactMeLink1"]" target="_blank"><span class="@ConfigurationManager.AppSettings["ContactMeIcon1"]"></span></a></li>
+            <li class=""><a href="@ConfigurationManager.AppSettings["ContactMeLink2"]" target="_blank"><span class="@ConfigurationManager.AppSettings["ContactMeIcon2"]"></span></a></li>
+            <li class=""><a href="@ConfigurationManager.AppSettings["ContactMeLink3"]" target="_blank"><span class="@ConfigurationManager.AppSettings["ContactMeIcon3"]"></span></a></li>
+            <li class=""><a href="@ConfigurationManager.AppSettings["ContactMeLink4"]" target="_blank"><span class="@ConfigurationManager.AppSettings["ContactMeIcon4"]"></span></a></li>
+        </ul>
     </div>
     <div class="uk-width-1-1">
-        <div class="uk-panel uk-panel-header">
-
-            @using (Html.BeginForm("ContactMe", "Home", FormMethod.Post, new { @class = "uk-form uk-form-stacked" }))
+        <div class="uk-grid" data-uk-grid-margin="">
+            <div class="uk-width-1-1 uk-width-medium-4-6">
+                <div class="uk-panel uk-panel-header">
+                    <h2 class="uk-panel-title uk-text-bold" style="padding:5px 5px;background-color:#f5f5f5"><i class="uk-icon-envelope uk-margin-small-left uk-margin-right"></i>ارسال ایمیل</h2>
+                    @using (Html.BeginForm("ContactMe", "Home", FormMethod.Post, new { @class = "uk-form uk-form-stacked" }))
             {
-                @Html.AntiForgeryToken()
-                <form class="uk-form uk-form-stacked">
+                        @Html.AntiForgeryToken()
+                        <form class="uk-form uk-form-stacked">
 
-                    <div class="uk-form-row">
-                        @Html.LabelFor(m => m.FromName, new { @class = "uk-form-label" })
-                        <div class="uk-form-controls">
-                            @Html.TextBoxFor(m => m.FromName, new { @class = "uk-width-1-1" })
-                            @Html.ValidationMessageFor(m => m.FromName)
-                        </div>
-                    </div>
+                            <div class="uk-form-row">
+                                @Html.LabelFor(m => m.FromName, new { @class = "uk-form-label" })
+                                <div class="uk-form-controls">
+                                    @Html.TextBoxFor(m => m.FromName, new { @class = "uk-width-1-1" })
+                                    @Html.ValidationMessageFor(m => m.FromName)
+                                </div>
+                            </div>
 
-                    <div class="uk-form-row">
-                        @Html.LabelFor(m => m.FromEmail, new { @class = "uk-form-label" })
-                        <div class="uk-form-controls">
-                            @Html.TextBoxFor(m => m.FromEmail, new { @class = "uk-width-1-1" })
-                            @Html.ValidationMessageFor(m => m.FromEmail)
-                        </div>
-                    </div>
+                            <div class="uk-form-row">
+                                @Html.LabelFor(m => m.FromEmail, new { @class = "uk-form-label" })
+                                <div class="uk-form-controls">
+                                    @Html.TextBoxFor(m => m.FromEmail, new { @class = "uk-width-1-1" })
+                                    @Html.ValidationMessageFor(m => m.FromEmail)
+                                </div>
+                            </div>
 
 
-                    <div class="uk-form-row">
-                        @Html.LabelFor(m => m.Message, new { @class = "uk-form-label" })
-                        <div class="uk-form-controls">
-                            @Html.TextAreaFor(m => m.Message, new { @class = "uk-width-1-1", cols = "100", rows = "9" })
-                            @Html.ValidationMessageFor(m => m.Message)
-                        </div>
-                    </div>
-                    @ViewBag.Recaptcha
+                            <div class="uk-form-row">
+                                @Html.LabelFor(m => m.Message, new { @class = "uk-form-label" })
+                                <div class="uk-form-controls">
+                                    @Html.TextAreaFor(m => m.Message, new { @class = "uk-width-1-1", cols = "100", rows = "9" })
+                                    @Html.ValidationMessageFor(m => m.Message)
+                                </div>
+                            </div>
+                            <div class="uk-form-row">
+                                @ViewBag.Recaptcha
 
-                    @if (ViewBag.RecaptchaLastErros != null)
-                    {
-                        <div>Oops! Invalid reCAPTCHA =(</div>
+                                @if (ViewBag.RecaptchaLastErros != null)
+                                {
+                                    <div>کد امنیتی وارد شده معتبر نیست ! مجدد تلاش کنید</div>
+                                }
+                            </div>
+                            <div class="uk-form-row">
+                                <div class="uk-form-controls">
+                                    <button class="uk-button uk-button-primary">ارسال</button>
+                                </div>
+                            </div>
+
+                        </form>
                     }
-                    <div class="uk-form-row">
-                        <div class="uk-form-controls">
-                            <button class="uk-button uk-button-primary">ارسال</button>
-                        </div>
-                    </div>
-
-                </form>
-            }
+                </div>
+            </div>
+            <div class="uk-width-1-1 uk-width-medium-2-6">
+                <div class="uk-panel uk-panel-box">
+                    <h2 class="uk-panel-title uk-text-bold"><i class="uk-icon-user uk-margin-small-right"></i>درباره من</h2>
+                    <p>
+                        در سال 1367 در تهران متولد شدم.
+                    </p>
+                    <p class="uk-text-justify" style="line-height:29px;font-weight:normal;font-style:normal">
+                        از سال 1383 فعالیت خود را در دنیای وب آغاز کردم، به مدت 5 سال در زمینه توسعه نرم افزار های تحت وب و سیستم های مدیریت محتوا به زبان PHP فعالیت کردم، سپس به فریمورک Microsoft.Net مهاجرت و در حال حاضر در زمینه UX Design و Software Architecture مشغول فعالیت هستم.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
-
-    
 </div>
 
 @section Scripts {

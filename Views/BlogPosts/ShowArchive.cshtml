@@ -1,9 +1,11 @@
 ﻿@using PagedList
 @using PagedList.Mvc
 @using System.Web.Configuration
+@using Blog.Helpers
 @model  PagedList.IPagedList<Blog.Models.BlogPost>
+
 @{
-    ViewBag.Title = "وبلاگ";
+    ViewBag.Title = "آرشیو"  + " " + ((int)ViewBag.Mounth).GetPersianMounthName() + " ماه " + ViewBag.Year  ;
 }
 
 <div class="uk-grid" data-uk-grid-margin="">
@@ -13,10 +15,6 @@
                 <a href="@Url.Action("Rss","Categories")" class="uk-icon-rss" style="font-size:90px;"></a>
             </div>
             <hr class="uk-grid-divider" />
-            @if (User.IsInRole("Admin"))
-            {
-                <a href="@Url.Action("Index","Categories")" class="uk-button uk-button-primary uk-margin-bottom uk-width-1-1 uk-text-left"><i class="uk-icon-cogs uk-margin-small-right"></i>مدیریت شاخه ها</a>
-            }
             <ul class="uk-nav uk-nav-side">
                 @Html.Action("Archive", "BlogPosts", new { year = ViewBag.Year , mounth = ViewBag.Mounth })
             </ul>

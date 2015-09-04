@@ -11,15 +11,15 @@ namespace Blog.Models
 
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "وارد کردن نام شاخه الزامی است")]
         [Display(Name = "نام شاخه")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "لطفا برای این شاخه یک Icon انتخاب کنید")]
         [Display(Name = "Icon")]
         public string IconClass { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "وارد کردن اولویت چیدمان الزامی است" )]
         [Display(Name = "اولویت چیدمان")]
         public int Order { get; set; }
 

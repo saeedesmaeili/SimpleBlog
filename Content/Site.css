@@ -34,11 +34,14 @@ body, h1, h2, h3, h4, h5, h6,
 
 html {
     overflow-y: scroll;
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: grayscale;
     font-family: "BNazanin";
 }
 
+.field-validation-error{
+    color:red;
+}
 img.lazy { background: no-repeat 50% 50%; }
 
 

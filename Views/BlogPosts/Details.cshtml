@@ -2,8 +2,38 @@
 @using System.Web.Configuration
 @{
     ViewBag.Title = Model.Title;
-    ViewBag.MetaDescription = Model.MetaDescription;
+    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority;
 }
+
+@section metaTags{
+    <meta name="description" content="@Model.MetaDescription" />
+    <meta name="keywords" content="@Model.Keywords" />
+    <meta name="robots" content="index, follow">
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@WebConfigurationManager.AppSettings["twitter:site"]">
+    <meta name="twitter:title" content="@Model.Title">
+    <meta name="twitter:description" content="@Model.MetaDescription">
+    <meta name="twitter:creator" content="@Model.Author.TwitterId">
+    <!-- Twitter Summary card images must be at least 120x120px -->
+    @if (Model.ShowPicture)
+    {
+        <meta name="twitter:image" content="@baseUrl@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"] + Model.Picture))?w=120&amp;h=120&amp;mode=max">
+    }
+    <!-- Open Graph data -->
+    <meta property="og:title" content="@Model.Title" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="@baseUrl@Url.Action("Details","BlogPosts", new { id = Model.CategoryId , postId = Model.Id })" />
+    @if (Model.ShowPicture)
+    {
+        <meta property="og:image" content="@baseUrl@(Url.Content(WebConfigurationManager.AppSettings["ImagePostPath"]+Model.Picture))?w=120&amp;h=120&amp;mode=max" />
+    }
+    <meta property="og:description" content="@Model.MetaDescription" />
+    <meta property="og:site_name" content="@WebConfigurationManager.AppSettings["og:SiteName"]" />
+    <meta property="fb:admins" content="@WebConfigurationManager.AppSettings["FacebookNumericId"]" />
+}
+
 <div class="uk-grid" data-uk-grid-margin="">
     <div class="uk-width-large-3-4">
         @Html.MvcSiteMap().SiteMapPath()
@@ -68,9 +98,8 @@
 
     <div class="uk-width-large-1-4">
         <div class="uk-panel uk-panel-box uk-text-center">
-            <img class="uk-border-circle" width="120" height="120" src="@Url.Content("~/images/me.jpg")" alt="سعید اسماعیلی Saeed Esmaeili">
-            <h3>سعید اسماعیلی</h3>
-            <p>UX Designer<br />Web Developer</p>
+            <img class="uk-border-circle" width="120" height="120" src="@Url.Content("~/images/me.jpg")" alt="@Model.Author.FirstName @Model.Author.LastName">
+            <h3 class="uk-text-bold">@Model.Author.FirstName @Model.Author.LastName</h3>
         </div>
         <div class="uk-panel uk-panel-box">
             <h3 class="uk-panel-title"><i class="uk-icon-archive uk-margin-small-right"></i>آرشیو</h3>

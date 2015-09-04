@@ -49,7 +49,7 @@
         <div class="uk-form-row">
             @Html.LabelFor(model => model.Keywords, htmlAttributes: new { @class = "uk-form-label" })
             <div class="uk-form-controls">
-                @Html.EditorFor(model => model.Keywords, new { htmlAttributes = new { @class = "uk-width-1-1" } })
+                @Html.EditorFor(model => model.Keywords, new { htmlAttributes = new { @class = "uk-width-1-1", placeholder = "کلمات کلیدی را از نظر معنایی  با , از یکدیگر جدا کنید. مثل : انواع ارتباطات رادیویی , مهترین روش های برقراری ارتباط رادیویی " } })
                 @Html.ValidationMessageFor(model => model.Keywords, "", new { @class = "text-danger" })
             </div>
         </div>

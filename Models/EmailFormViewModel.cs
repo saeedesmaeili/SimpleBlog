@@ -8,13 +8,14 @@ namespace Blog.Models
 {
     public class EmailFormViewModel
     {
-        [Required, Display(Name = "نام شما")]
+        [Required(ErrorMessage ="لطفا نام خود را وارد کنید"), Display(Name = "نام شما")]
         public string FromName { get; set; }
 
-        [Required, Display(Name = "پست الکترونیکی"), EmailAddress]
+        [Required(ErrorMessage = "وارد کردن پست الکترونیکی الزامی است"), Display(Name = "پست الکترونیکی"), EmailAddress(ErrorMessage ="پست الکترونیکی وارد شده معتبر نیست")]
+        
         public string FromEmail { get; set; }
 
-        [Required,Display(Name = "پیام شما")]
+        [Required(ErrorMessage ="پیام نمی تواند خالی باشد"),Display(Name = "پیام شما")]
         public string Message { get; set; }
     }
 }

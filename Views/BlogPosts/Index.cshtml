@@ -3,7 +3,18 @@
 @using System.Web.Configuration
 @model  PagedList.IPagedList<Blog.Models.BlogPost>
 @{
-    ViewBag.Title = "وبلاگ";
+    if (ViewBag.CategoryId != null)
+    {
+        ViewBag.Title = ViewBag.CategoryName;
+    }
+    else
+    {
+        ViewBag.Title = "وبلاگ";
+    }
+}
+
+@section metaTags{
+    <meta name="robots" content="noindex, follow">
 }
 
 <div class="uk-grid" data-uk-grid-margin="">

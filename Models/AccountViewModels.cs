@@ -77,6 +77,11 @@ namespace Blog.Models
         [Display(Name = "ایمیل")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "وارد کردن {0} الزامیست")]
+        [Display(Name = "نام کاربری Twitter")]
+        public string TwitterId { get; set; }
+
+
         [Required(ErrorMessage ="وارد کردن {0} الزامیست")]
         [StringLength(100, ErrorMessage = "{0} حداقل باید {2} کاراکتر باشد.", MinimumLength = 6)]
         [DataType(DataType.Password)]

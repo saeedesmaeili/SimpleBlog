@@ -58,6 +58,7 @@ namespace Blog.Controllers
             if (id != null)
             {
                 ViewBag.CategoryId = id;
+                ViewBag.CategoryName = category.Name;
                 posts = posts.Where(x => x.CategoryId == id);
                 ViewBag.CategoryParentId = category.ParentId;
 
@@ -112,7 +113,7 @@ namespace Blog.Controllers
             var node = SiteMaps.Current.FindSiteMapNodeFromKey("BlogPosts_ShowArchive");
             if (node != null)
             {
-                node.Title = mounth.GetPersianMounthName() + " ماه " + year;
+                node.Title = mounth.GetPersianMounthName() + " " + year;
             }
 
             // Show UnPublished Post if user is in Role admin or Author 

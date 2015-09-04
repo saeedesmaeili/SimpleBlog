@@ -16,6 +16,7 @@ namespace Blog.Models
         public int Id { get; set; }
 
         [Display(Name = "عنوان مطلب")]
+        [Required(ErrorMessage ="وارد کردن عنوان مطلب الزامی است")]
         public string Title { get; set; }
 
         [Display(Name = "تصویر")]
@@ -25,8 +26,9 @@ namespace Blog.Models
         public bool ShowPicture { get; set; }
 
         [Display(Name = "Meta Description")]
+        [Required(ErrorMessage = "وارد کردن Meta Description الزامی است")]
         [DataType(DataType.MultilineText)]
-        [MaxLength(150)]
+        [MaxLength(150 , ErrorMessage = "حداکثر طول مجاز 150 کاراکتر میباشد")]
         public string MetaDescription { get; set; }
 
         [Display(Name = "متن کامل")]
@@ -41,6 +43,7 @@ namespace Blog.Models
 
         [Display(Name = "کلمات کلیدی")]
         [DataType(DataType.MultilineText)]
+        [Required(ErrorMessage ="واردکردن کلمات کلیدی الزامی است")]
         public string Keywords { get; set; }
 
         [Display(Name = "نویسنده")]
@@ -55,7 +58,7 @@ namespace Blog.Models
 
         private DateTime _publishDate;
         [Display(Name = "تاریخ انتشار")]
-        [UIHint("PersianDateTime")]
+        [UIHint("PersianDate")]
         public DateTime PublishDate
         {
             get
@@ -83,6 +86,7 @@ namespace Blog.Models
         public DateTime LastModifiedDate { get; set; }
 
         [Display(Name = "شاخه")]
+        [Required(ErrorMessage ="لطفا برای این مطلب یک شاخه انتخاب کنید")]
         public int CategoryId { get; set; }
 
         [Display(Name = "شاخه")]
